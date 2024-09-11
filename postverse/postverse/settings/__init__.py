@@ -8,5 +8,6 @@ LOCAL_SETTINGS_PATH = str(BASE_DIR / "local/settings.dev.py")
 
 include(
     'base.py',
-    LOCAL_SETTINGS_PATH
+    LOCAL_SETTINGS_PATH,
+    'rest_framework.py'
 )
