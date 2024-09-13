@@ -18,7 +18,8 @@ class RegisterAPIView(APIView):
             user = serializer.save()
             login(request, user)
 
-            return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
+            # TODO: maybe return some of the user data too?
+            return Response({"detail": "User registered successfully."}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

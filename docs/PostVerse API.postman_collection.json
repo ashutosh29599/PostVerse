@@ -1,0 +1,164 @@
+{
+	"info": {
+		"_postman_id": "43d960ae-c87d-4686-a063-2115d7e31e54",
+		"name": "PostVerse API",
+		"description": "Version: v0.2.0\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24526531"
+	},
+	"item": [
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test_user\",\n    \"email\": \"test_user@domain.com\",\n    \"password1\": \"super_secret_pwd_1\",\n    \"password2\": \"super_secret_pwd_1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/register/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"register",
+								""
+							]
+						},
+						"description": "This endpoint allows new users to register by providing a username, password, and email. Upon successful registration, the user’s information is stored, and the user can then authenticate using their credentials.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/register/`\n    \n- **Requires:** `username`, `password`, `email`\n    \n- **Response:** Success message or Errors"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Access & Refresh Tokens",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test_user\",\n    \"password\": \"super_secret_pwd1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/token/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"token",
+								""
+							]
+						},
+						"description": "This endpoint is used for authenticating an existing user. It returns a pair of tokens—an access token and a refresh token—which can be used for making authenticated API requests.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/token/`\n    \n- **Requires:** `username`, `password`\n    \n- **Response:** Access Token & Refresh Token"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": <access-token>\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/token/refresh/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"token",
+								"refresh",
+								""
+							]
+						},
+						"description": "This endpoint allows users to refresh their access token using a valid refresh token. This enables continuous access without requiring the user to re-authenticate, enhancing security and usability.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/token/refresh/`\n    \n- **Requires:** Refresh Token granted during login\n    \n- **Response:** A new Access Token"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2MTYxMjM3LCJpYXQiOjE3MjYwNzQ4MzcsImp0aSI6ImE5YjhmZDRjZGI4ZDRmZGE5NGYyMzZmZmQwZjcxYzdmIiwidXNlcl9pZCI6NX0.e-Jj5dhmIjmck42WiSdodgWydTKHK2wTb-4JqOekNws",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"old_password\": \"super_secret_pwd1\",\n    \"new_password1\": \"new_secret_pwd1\",\n    \"new_password2\": \"new_secret_pwd1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/change-password/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"change-password",
+								""
+							]
+						},
+						"description": "This endpoint allows authenticated users to change their password. Users must provide their current password and confirm the new password. The new password is validated and updated upon success\n\n- **Method:** `PUT`\n    \n- **Path:** `/api/change-password/`\n    \n- **Requires:** `old_password`, `new_password1`, `new_password2`\n    \n- **Response:** Success message indicating password change"
+					},
+					"response": []
+				}
+			],
+			"description": "This sections contains all user authentication and account management functionalities in the PostVerse API. These endpoints enable developers to integrate secure user registration, authentication, token management, and password change into their applications. Using JWT (JSON Web Tokens), this API ensures secure and efficient user authentication workflows, while providing methods for users to manage their own credentials.\n\n#### Endpoints\n\n1. Register a New User: Allows users to sign up by providing a username, password, and email.\n    \n2. Obtain Access and Refresh Token (Login): Authenticates users and returns tokens for secure API access.\n    \n3. Refresh Token: Generates a new access token using a valid refresh token.\n    \n4. Change Password: Allows authenticated users to change their passwords securely."
+		}
+	]
+}

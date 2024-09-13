@@ -20,3 +20,7 @@ superuser:
 
 .PHONY: update
 update: install migrate ;
+
+.PHONY: test
+test:
+	poetry run python3 -m postverse.manage test $(module)
