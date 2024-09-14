@@ -51,7 +51,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"test_user\",\n    \"password\": \"super_secret_pwd1\"\n}",
+							"raw": "{\n    \"username\": \"test_user\",\n    \"password\": \"super_secret_pwd_1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -81,6 +81,16 @@
 				{
 					"name": "Refresh Token",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNjM0OTgwOSwiaWF0IjoxNzI2MzQ4MDA5LCJqdGkiOiJhZDYxNDg4NDNmMGE0NzcwYWE4N2RkY2JlZjg1NWJiMyIsInVzZXJfaWQiOjJ9.z2qKg7gQ-9OdgYqSqgXGCJeK5qB5typACPjzghTZBpY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -121,7 +131,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2MTYxMjM3LCJpYXQiOjE3MjYwNzQ4MzcsImp0aSI6ImE5YjhmZDRjZGI4ZDRmZGE5NGYyMzZmZmQwZjcxYzdmIiwidXNlcl9pZCI6NX0.e-Jj5dhmIjmck42WiSdodgWydTKHK2wTb-4JqOekNws",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NDM0NDUwLCJpYXQiOjE3MjYzNDgwMDksImp0aSI6IjVlZmMzMGMyZjdhNTQ1YzA4OTA5NGMzODk3MWQ2MjRiIiwidXNlcl9pZCI6Mn0.ZbrXtvHIBDDo2CdkMte852tNSJlD4Fi_G6lTee6SWsQ",
 									"type": "string"
 								}
 							]
@@ -130,7 +140,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"old_password\": \"super_secret_pwd1\",\n    \"new_password1\": \"new_secret_pwd1\",\n    \"new_password2\": \"new_secret_pwd1\"\n}",
+							"raw": "{\n    \"old_password\": \"super_secret_pwd_1\",\n    \"new_password1\": \"new_secret_pwd1\",\n    \"new_password2\": \"new_secret_pwd1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -154,6 +164,45 @@
 							]
 						},
 						"description": "This endpoint allows authenticated users to change their password. Users must provide their current password and confirm the new password. The new password is validated and updated upon success\n\n- **Method:** `PUT`\n    \n- **Path:** `/api/change-password/`\n    \n- **Requires:** `old_password`, `new_password1`, `new_password2`\n    \n- **Response:** Success message indicating password change"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NDM2Nzc4LCJpYXQiOjE3MjYzNTAzNzgsImp0aSI6IjU0NDAzMTA4YTE1ZDRiNmJiZDAzY2MxNzllODc5ODVkIiwidXNlcl9pZCI6M30.f4G2n7Hn3IRg1kzocsCMYNsq7YMZlDw3FvVGUaBoU30",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/delete-user/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"delete-user",
+								""
+							]
+						},
+						"description": "This endpoint allows authenticated users to delete their account. Users must be logged in.\n\n- **Method:** `DELETE`\n    \n- **Path:** `/api/delete-user/`\n    \n- **Requires:** Access token granted during login\n    \n- **Response:** Successful user deletion message"
 					},
 					"response": []
 				}

@@ -62,7 +62,7 @@ class ChangePasswordTest(RegisteredUsersTestBase):
                       response.json()['non_field_errors'])
 
     def test_change_password_invalid_access_token(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer abcd')
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer abcd')
 
         data = {
             'old_password': 'super_secret_password1',

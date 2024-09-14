@@ -4,6 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth import login, update_session_auth_hash
+from django.db import IntegrityError
 
 from .serializers import UserRegistrationSerializer, ChangePasswordSerializer
 
@@ -22,6 +23,23 @@ class RegisterAPIView(APIView):
             return Response({"detail": "User registered successfully."}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteUserAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+
+        try:
+            user.delete()
+            return Response({"detail": "User deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        except IntegrityError:
+            return Response({"detail": "An error occurred while trying to delete the user."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"detail": f"An unexpected error occurred: {str(e)}"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class ChangePasswordAPIView(APIView):
