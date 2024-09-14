@@ -35,5 +35,4 @@ jobs:
       env:
         DJANGO_SETTINGS_MODULE: postverse.settings
       run: |
-        poetry run python manage.py test
-    
+        poetry run python postverse/manage.py test
