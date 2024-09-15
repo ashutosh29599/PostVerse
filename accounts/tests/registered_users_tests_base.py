@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 
 class RegisteredUsersTestBase(APITestCase):
+    # TODO: Create users dynamically instead of creating manually.
     def setUp(self):
         self.user_data = {
             'username': 'test_user',

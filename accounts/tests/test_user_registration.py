@@ -9,6 +9,7 @@ class UserRegistrationTest(APITestCase):
         make test module=accounts.tests.test_user_registration.UserRegistrationTest
     """
     def test_user_registration(self):
+        # TODO: Test whether a profile object is created when the user registers
         data = {
             'username': 'test_user',
             'email': 'test_user@domain.com',
