@@ -1,15 +1,20 @@
 from django.urls import reverse
 from rest_framework import status
 
-from .registered_users_tests_base import RegisteredUsersTestBase
+from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 
 class UserLoginTokenTest(RegisteredUsersTestBase):
     """
         make test module=accounts.tests.test_user_login_token.UserLoginTokenTest
     """
+
     def test_token_generation(self):
-        response = self.client.post(reverse('token_obtain_pair'), self.user_data)
+        response = self.client.post(reverse('token_obtain_pair'),
+                                    data={
+                                        'username': self.user_credentials['username'],
+                                        'password': self.user_credentials['password1']
+                                    })
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('refresh', response.json())
@@ -25,7 +30,12 @@ class UserLoginTokenTest(RegisteredUsersTestBase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_token_refresh(self):
-        refresh_token = self.client.post(reverse('token_obtain_pair'), self.user_data).json()['refresh']
+        refresh_token = self.client.post(reverse('token_obtain_pair'),
+                                         data={
+                                             'username': self.user_credentials['username'],
+                                             'password': self.user_credentials['password1']
+                                         }).json()['refresh']
+
         response = self.client.post(reverse('token_refresh'), {
             'refresh': refresh_token
         })
