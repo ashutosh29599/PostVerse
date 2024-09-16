@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "43d960ae-c87d-4686-a063-2115d7e31e54",
 		"name": "PostVerse API",
-		"description": "Version: v0.2.0\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
+		"description": "Version: v0.3.0\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24526531"
 	},
@@ -25,7 +25,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/register/",
+							"raw": "http://127.0.0.1:8000/api/accounts/register/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -36,11 +36,12 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"accounts",
 								"register",
 								""
 							]
 						},
-						"description": "This endpoint allows new users to register by providing a username, password, and email. Upon successful registration, the user’s information is stored, and the user can then authenticate using their credentials.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/register/`\n    \n- **Requires:** `username`, `password`, `email`\n    \n- **Response:** Success message or Errors"
+						"description": "This endpoint allows new users to register by providing a username, password, and email. Upon successful registration, the user’s information is stored, and the user can then authenticate using their credentials.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/register/`\n    \n- **Requires:** `username`, `password`, `email`\n    \n- **Response:** Success message or Errors"
 					},
 					"response": []
 				},
@@ -59,7 +60,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/token/",
+							"raw": "http://127.0.0.1:8000/api/accounts/token/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -70,11 +71,12 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"accounts",
 								"token",
 								""
 							]
 						},
-						"description": "This endpoint is used for authenticating an existing user. It returns a pair of tokens—an access token and a refresh token—which can be used for making authenticated API requests.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/token/`\n    \n- **Requires:** `username`, `password`\n    \n- **Response:** Access Token & Refresh Token"
+						"description": "This endpoint is used for authenticating an existing user. It returns a pair of tokens—an access token and a refresh token—which can be used for making authenticated API requests.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/token/`\n    \n- **Requires:** `username`, `password`\n    \n- **Response:** Access Token & Refresh Token"
 					},
 					"response": []
 				},
@@ -86,7 +88,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNjM0OTgwOSwiaWF0IjoxNzI2MzQ4MDA5LCJqdGkiOiJhZDYxNDg4NDNmMGE0NzcwYWE4N2RkY2JlZjg1NWJiMyIsInVzZXJfaWQiOjJ9.z2qKg7gQ-9OdgYqSqgXGCJeK5qB5typACPjzghTZBpY",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNjQzNTgwOCwiaWF0IjoxNzI2NDM0MDA4LCJqdGkiOiJlZDVkOTE4OTI0NWY0ZWFhODMxMjAwNTcwNDE4NmIxOSIsInVzZXJfaWQiOjV9.vMlNm3oh5ZoMhcOVS-70rbqEWXrHJh4AoCHbkq1v-_w",
 									"type": "string"
 								}
 							]
@@ -103,7 +105,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/token/refresh/",
+							"raw": "http://127.0.0.1:8000/api/accounts/token/refresh/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -114,12 +116,13 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"accounts",
 								"token",
 								"refresh",
 								""
 							]
 						},
-						"description": "This endpoint allows users to refresh their access token using a valid refresh token. This enables continuous access without requiring the user to re-authenticate, enhancing security and usability.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/token/refresh/`\n    \n- **Requires:** Refresh Token granted during login\n    \n- **Response:** A new Access Token"
+						"description": "This endpoint allows users to refresh their access token using a valid refresh token. This enables continuous access without requiring the user to re-authenticate, enhancing security and usability.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/token/refresh/`\n    \n- **Requires:** Refresh Token granted during login\n    \n- **Response:** A new Access Token"
 					},
 					"response": []
 				},
@@ -131,7 +134,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NDM0NDUwLCJpYXQiOjE3MjYzNDgwMDksImp0aSI6IjVlZmMzMGMyZjdhNTQ1YzA4OTA5NGMzODk3MWQ2MjRiIiwidXNlcl9pZCI6Mn0.ZbrXtvHIBDDo2CdkMte852tNSJlD4Fi_G6lTee6SWsQ",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NTIwNDA4LCJpYXQiOjE3MjY0MzQwMDgsImp0aSI6ImRhMDgwZTgxYmQ1YjQzMWZiOTM1MDAyYjZiZTRlY2RhIiwidXNlcl9pZCI6NX0.JmmWxj66BXqOjvLV2hJJqC_oLPOQcgIXILWWk0jbqf4",
 									"type": "string"
 								}
 							]
@@ -148,7 +151,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/change-password/",
+							"raw": "http://127.0.0.1:8000/api/accounts/change-password/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -159,6 +162,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"accounts",
 								"change-password",
 								""
 							]
@@ -175,7 +179,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NDM2Nzc4LCJpYXQiOjE3MjYzNTAzNzgsImp0aSI6IjU0NDAzMTA4YTE1ZDRiNmJiZDAzY2MxNzllODc5ODVkIiwidXNlcl9pZCI6M30.f4G2n7Hn3IRg1kzocsCMYNsq7YMZlDw3FvVGUaBoU30",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NTIwNjYxLCJpYXQiOjE3MjY0MzQyNjEsImp0aSI6ImIzMWY3YmI0YzAzOTQ2NzBiMDc3YjI2N2ZkYmJmZjY5IiwidXNlcl9pZCI6Nn0.fryze88GLVDasqfT_8EYboAAEgH3oGAj1wvnIxP1kFU",
 									"type": "string"
 								}
 							]
@@ -187,7 +191,7 @@
 							"file": {}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/delete-user/",
+							"raw": "http://127.0.0.1:8000/api/accounts/delete-user/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -198,6 +202,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"accounts",
 								"delete-user",
 								""
 							]
@@ -208,6 +213,84 @@
 				}
 			],
 			"description": "This sections contains all user authentication and account management functionalities in the PostVerse API. These endpoints enable developers to integrate secure user registration, authentication, token management, and password change into their applications. Using JWT (JSON Web Tokens), this API ensures secure and efficient user authentication workflows, while providing methods for users to manage their own credentials.\n\n#### Endpoints\n\n1. Register a New User: Allows users to sign up by providing a username, password, and email.\n    \n2. Obtain Access and Refresh Token (Login): Authenticates users and returns tokens for secure API access.\n    \n3. Refresh Token: Generates a new access token using a valid refresh token.\n    \n4. Change Password: Allows authenticated users to change their passwords securely."
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/profiles/profile/test_user/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"profiles",
+								"profile",
+								"test_user",
+								""
+							]
+						},
+						"description": "This endpoint allows users to fetch any user's profile. Users must provide the username of the user whose profile details they wish to fetch.\n\n- **Method:** `GET`\n    \n- **Path:** `api/profiles/profile/test_user/`\n    \n- **Requires:** Profile owner's username\n    \n- **Response:** Profile details (first name, last name, bio, photo)"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NTIwNDA4LCJpYXQiOjE3MjY0MzQwMDgsImp0aSI6ImRhMDgwZTgxYmQ1YjQzMWZiOTM1MDAyYjZiZTRlY2RhIiwidXNlcl9pZCI6NX0.JmmWxj66BXqOjvLV2hJJqC_oLPOQcgIXILWWk0jbqf4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": <user_id>,\n    \"first_name\": \"Test\",\n    \"last_name\": \"User\",\n    \"bio\": \"This is the test bio!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/profiles/edit-profile/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"profiles",
+								"edit-profile",
+								""
+							]
+						},
+						"description": "This endpoint allows authenticated users to update their profile.\n\n- **Method:** `PATCH`\n    \n- **Path:** `api/profiles/edit_profile/`\n    \n- **Requires:** Authenticated user's user id\n    \n- **Response:** Success/Failure message"
+					},
+					"response": []
+				}
+			],
+			"description": "This sections contains all user profile management functionalities in the PostVerse API. These endpoints enable developers to integrate user profile fetching and secure user profile updation functionalities in their applications.\n\n#### Endpoints\n\n1. Fetching a User Profile: Allows users to visit a user's profile by providing the user's username.\n    \n2. Updating a User Profile: Allows authenticated users to update their profile."
 		}
 	]
 }

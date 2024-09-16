@@ -6,10 +6,11 @@ from rest_framework.views import APIView
 from django.contrib.auth import login, update_session_auth_hash
 from django.db import IntegrityError
 
+from profiles.models import Profile
 from .serializers import UserRegistrationSerializer, ChangePasswordSerializer
 
 
-class RegisterAPIView(APIView):
+class RegisterUserAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -17,9 +18,9 @@ class RegisterAPIView(APIView):
 
         if serializer.is_valid():
             user = serializer.save()
+            Profile.objects.create(user=user)   # type: ignore
             login(request, user)
 
-            # TODO: maybe return some of the user data too?
             return Response({"detail": "User registered successfully."}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

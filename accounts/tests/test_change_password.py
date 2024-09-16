@@ -1,17 +1,17 @@
 from django.urls import reverse
 from rest_framework import status
 
-from .registered_users_tests_base import RegisteredUsersTestBase
+from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 
 class ChangePasswordTest(RegisteredUsersTestBase):
     """
         make test module=accounts.tests.test_change_password.ChangePasswordTest
     """
+
     def setUp(self):
         super().setUp()
-        self.access_token = self.client.post(reverse('token_obtain_pair'), data=self.user_data).json()['access']
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+        super().authenticate()
 
     def test_change_password(self):
         data = {
@@ -25,7 +25,7 @@ class ChangePasswordTest(RegisteredUsersTestBase):
 
         # Test if you are able to get access/refresh tokens with the new credentials.
         response = self.client.post(reverse('token_obtain_pair'), data={
-            'username': self.user_data['username'],
+            'username': self.user_credentials['username'],
             'password': 'new_secret_password1'
         })
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -34,7 +34,7 @@ class ChangePasswordTest(RegisteredUsersTestBase):
 
         # Test to see that you aren't getting access/refresh tokens with the old credentials.
         response = self.client.post(reverse('token_obtain_pair'), data={
-            'username': self.user_data['username'],
+            'username': self.user_credentials['username'],
             'password': 'super_secret_password1'
         })
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
