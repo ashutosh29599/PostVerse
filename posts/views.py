@@ -1,13 +1,21 @@
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from .models import Post
 from .serializer import PostSerializer
 
 
+class PostPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'  # the client can set the page size via query param
+    max_page_size = 100
+
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()  # type: ignore
     serializer_class = PostSerializer
+    pagination_class = PostPagination
 
     def get_permissions(self):
         if self.request.method in ['GET']:
