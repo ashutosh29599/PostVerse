@@ -291,6 +291,140 @@
 				}
 			],
 			"description": "This sections contains all user profile management functionalities in the PostVerse API. These endpoints enable developers to integrate user profile fetching and secure user profile updation functionalities in their applications.\n\n#### Endpoints\n\n1. Fetching a User Profile: Allows users to visit a user's profile by providing the user's username.\n    \n2. Updating a User Profile: Allows authenticated users to update their profile."
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"This is the test post!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/posts/create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"posts",
+								"create",
+								""
+							]
+						},
+						"description": "This endpoint allows authenticated users to create a post.\n\n- **Method:** `POST`\n    \n- **Path:** `api/posts/create/`\n    \n- **Requires:** Post text with an optional image\n    \n- **Response:** Details associated with the post if successful with `200 OK` HTTP status code, else errors with `400 BAD REQUEST` HTTP status code."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"Updating the test post!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/posts/<post_id>/update/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"posts",
+								"<post_id>",
+								"update",
+								""
+							]
+						},
+						"description": "This endpoint allows authenticated users to update their post.\n\n- **Method:** `PUT`\n    \n- **Path:** `api/posts//update/`\n    \n- **Requires:** Post text with an optional image\n    \n- **Response:** Details associated with the post if successful with `200 OK` HTTP status code, else errors with `400 BAD REQUEST` HTTP status code."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/posts/<post_id>/delete/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"posts",
+								"<post_id>",
+								"delete",
+								""
+							]
+						},
+						"description": "This endpoint allows authenticated users to delete their post.\n\n- **Method:** `DELETE`\n    \n- **Path:** `api/posts//delete/`\n    \n- **Requires:** Post id\n    \n- **Response:** `204 NO CONTENT` HTTP status code if successful. `404 NOT FOUND` HTTP status code if the post id is invalid."
+					},
+					"response": []
+				}
+			],
+			"description": "This sections contains all user post management functionalities in the PostVerse API. These endpoints enable developers to integrate create, update, and delete functionalities for posts in their applications."
 		}
 	]
 }
