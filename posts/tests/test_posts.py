@@ -56,8 +56,8 @@ class CreatePostTest(RegisteredUsersTestBase):
         self.assertEqual('This is a test post!', response.json()['text'])
         self.assertIn('unit_test_image', response.json()['photo'])
 
-    # def test_create_a_post_without_text_or_photo(self):
-    #     response = self.client.post(reverse('post-list'), data={})
-    #
-    #     self.assertEqual('A post must have either text or photo or both.', response.json()['detail'])
-    #     self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+    def test_create_a_post_without_text_or_photo(self):
+        response = self.client.post(reverse('post-list'), data={})
+
+        self.assertEqual('A post must either have text or photo or both.', response.json()['detail'])
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
