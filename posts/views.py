@@ -1,6 +1,7 @@
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
 
 from .models import Post
 from .serializer import PostSerializer
@@ -28,6 +29,24 @@ class PostViewSet(viewsets.ModelViewSet):
             return Post.objects.filter(user__username=username)  # type: ignore
 
         return Post.objects.all()  # type: ignore
+
+    def create(self, request, *args, **kwargs):
+        if 'text' not in request.data and 'photo' not in request.data:
+            return Response(
+                {'detail': 'A post must either have text or photo or both.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        if 'text' not in request.data and 'photo' not in request.data:
+            return Response(
+                {'detail': 'A post must either have text or photo or both.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().update(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
