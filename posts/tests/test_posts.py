@@ -72,6 +72,23 @@ class EditPostTest(RegisteredUsersTestBase):
         super().setUp()
         super().authenticate()
 
+    # def post_a_post(self, text=None, photo_name=None, photo_url=None):
+    #     data = {}
+    #
+    #     if text:
+    #         data['text'] = text
+    #
+    #     if photo_name and photo_url:
+    #         with open(photo_url, 'rb') as image:
+    #             data['photo'] = SimpleUploadedFile(
+    #                 name=photo_name,
+    #                 content=image.read(),
+    #                 content_type='image/png'
+    #             )
+    #             return self.client.post(reverse('post-list'), data=data, format='multipart')
+    #
+    #     return self.client.post(reverse('post-list'), data=data)
+
     def test_edit_post_with_text_alone(self):
         data = {
             'text': 'This is a test post!'
