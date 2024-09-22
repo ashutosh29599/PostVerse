@@ -117,11 +117,36 @@ USE_TZ = True
 
 # CORS
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",  # React frontend origin
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React frontend origin
+    "http://127.0.0.1:3000"
+]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOW_HEADERS = [
+#     'content-type',
+#     'authorization',
+#     'x-csrftoken',
+#     'x-requested-with',
+#     'accept',
+# ]
+#
+# CORS_ALLOW_METHODS = [
+#     'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'
+# ]
+# SECURE_REFERRER_POLICY = 'no-referrer-when-downgrade'
+# CROSS_ORIGIN_OPENER_POLICY = None
+
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+
+# CSRF_COOKIE_NAME = "csrftoken"
+# CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
+# CSRF_USE_SESSIONS = False  # Use cookie-based CSRF
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
