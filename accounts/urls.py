@@ -14,10 +14,10 @@ urlpatterns = [
     path('login/', LoginUserAPIView.as_view(), name='login'),
     path('logout/', LogoutUserAPIView.as_view(), name='logout'),
     path('check-auth/', CheckAuthAPIView.as_view(), name='check_auth'),
-    path('delete-user/', DeleteUserAPIView.as_view(), name='delete_user'),
     path('change-password/', ChangePasswordAPIView.as_view(), name='change_password'),
+    path('delete-user/', DeleteUserAPIView.as_view(), name='delete_user'),
 
     # JWT authentication URLs
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),    # To be deprecated
     path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh')
 ]

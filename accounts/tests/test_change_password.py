@@ -23,22 +23,25 @@ class ChangePasswordTest(RegisteredUsersTestBase):
         response = self.client.put(reverse('change_password'), data=data)
         self.assertIn('Password has been changed successfully.', response.json()['detail'])
 
-        # Test if you are able to get access/refresh tokens with the new credentials.
-        response = self.client.post(reverse('token_obtain_pair'), data={
+        # Test to see if you are able to login with the new credentials.
+        response = self.client.post(reverse('login'), data={
             'username': self.user_credentials['username'],
-            'password': 'new_secret_password1'
+            'password': data['new_password1']
         })
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('refresh', response.json())
-        self.assertIn('access', response.json())
 
-        # Test to see that you aren't getting access/refresh tokens with the old credentials.
-        response = self.client.post(reverse('token_obtain_pair'), data={
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual('Login successful.', response.json()['detail'])
+        self.assertIn('access', response.cookies)
+        self.assertIn('refresh', response.cookies)
+
+        # Test to make sure you cannot login with the old credentials.
+        response = self.client.post(reverse('login'), data={
             'username': self.user_credentials['username'],
-            'password': 'super_secret_password1'
+            'password': data['old_password']
         })
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertIn('No active account found with the given credentials', response.json()['detail'])
+
+        self.assertEqual(status.HTTP_401_UNAUTHORIZED, response.status_code)
+        self.assertEqual('Invalid credentials', response.json()['detail'])
 
     def test_change_password_incorrect_credentials(self):
         data = {
@@ -48,6 +51,8 @@ class ChangePasswordTest(RegisteredUsersTestBase):
         }
 
         response = self.client.put(reverse('change_password'), data=data)
+
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
         self.assertIn('Your old password is incorrect.', response.json()['old_password'])
 
     def test_change_password_invalid_new_password(self):
@@ -58,11 +63,13 @@ class ChangePasswordTest(RegisteredUsersTestBase):
         }
 
         response = self.client.put(reverse('change_password'), data=data)
+
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
         self.assertIn('This password is too short. It must contain at least 8 characters.',
                       response.json()['non_field_errors'])
 
     def test_change_password_invalid_access_token(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Bearer abcd')
+        super().authenticate(correct_access_token=False)
 
         data = {
             'old_password': 'super_secret_password1',
@@ -71,4 +78,6 @@ class ChangePasswordTest(RegisteredUsersTestBase):
         }
 
         response = self.client.put(reverse('change_password'), data=data)
-        self.assertIn('Given token not valid for any token type', response.json()['detail'])
+
+        self.assertEqual(status.HTTP_403_FORBIDDEN, response.status_code)
+        self.assertIn('Invalid token', response.json()['detail'])
