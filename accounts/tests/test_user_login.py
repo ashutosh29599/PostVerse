@@ -4,13 +4,34 @@ from rest_framework import status
 from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 
-class UserLoginTokenTest(RegisteredUsersTestBase):
+class UserLoginTest(RegisteredUsersTestBase):
     """
         make test module=accounts.tests.test_user_login_token.UserLoginTokenTest
-
-        TODO: we are now using LoginUserAPIView for logging the user in, not /token and /token/refresh,
-        TODO: although those endpoints are still valid, so add tests for LoginUserAPIView
     """
+
+    def test_login_with_correct_credentials(self):
+        response = self.client.post(reverse('login'), data={
+            'username': self.user_credentials['username'],
+            'password': self.user_credentials['password1']
+        })
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual('Login successful', response.json()['detail'])
+        self.assertIn('access', response.cookies)
+        self.assertIn('refresh', response.cookies)
+
+    def test_login_with_incorrect_credentials(self):
+        response = self.client.post(reverse('login'), data={
+            'username': self.user_credentials['username'],
+            'password': 'incorrect_password'
+        })
+
+        self.assertEqual(status.HTTP_401_UNAUTHORIZED, response.status_code)
+        self.assertEqual('Invalid credentials', response.json()['detail'])
+        self.assertNotIn('access', response.cookies)
+        self.assertNotIn('refresh', response.cookies)
+
+    # The following tests are to be deprecated
 
     def test_token_generation(self):
         """
@@ -37,17 +58,3 @@ class UserLoginTokenTest(RegisteredUsersTestBase):
 
         self.assertIn('No active account found with the given credentials', response.json()['detail'])
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-    def test_token_refresh(self):
-        super().authenticate()
-        response = self.client.post(reverse('token_refresh'))
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('access', response.cookies)
-
-    def test_token_refresh_invalid_refresh_token(self):
-        super().authenticate(correct_refresh_token=False)
-        response = self.client.post(reverse('token_refresh'))
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertIn('Invalid or expired refresh token', response.json()['detail'])

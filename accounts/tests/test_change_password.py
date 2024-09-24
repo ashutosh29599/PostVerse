@@ -30,7 +30,7 @@ class ChangePasswordTest(RegisteredUsersTestBase):
         })
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual('Login successful.', response.json()['detail'])
+        self.assertEqual('Login successful', response.json()['detail'])
         self.assertIn('access', response.cookies)
         self.assertIn('refresh', response.cookies)
 

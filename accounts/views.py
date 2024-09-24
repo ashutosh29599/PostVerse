@@ -42,7 +42,7 @@ class LoginUserAPIView(APIView):
 
         if user:
             refresh = RefreshToken.for_user(user)
-            response = Response({"detail": "Login successful."}, status=status.HTTP_200_OK)
+            response = Response({"detail": "Login successful"}, status=status.HTTP_200_OK)
 
             # secure=True for prod
             response.set_cookie("access",
@@ -68,7 +68,7 @@ class LogoutUserAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        response = Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+        response = Response({"detail": "Successfully logged out"}, status=status.HTTP_200_OK)
         response.delete_cookie("access")
         response.delete_cookie("refresh")
 
