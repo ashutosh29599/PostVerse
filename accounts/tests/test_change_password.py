@@ -6,11 +6,14 @@ from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 class ChangePasswordTest(RegisteredUsersTestBase):
     """
+    Test class for '/change_password' endpoint.
+
+    Command to run the tests of this class:
         make test module=accounts.tests.test_change_password.ChangePasswordTest
     """
 
-    def setUp(self):
-        super().setUp()
+    def setUp(self, *args, **kwargs):
+        super().setUp(*args, **kwargs)
         super().authenticate()
 
     def test_change_password(self):

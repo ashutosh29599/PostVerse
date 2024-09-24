@@ -5,12 +5,24 @@ from rest_framework.test import APITestCase
 
 
 class RegisteredUsersTestBase(APITestCase):
-    def setUp(self):
+    def setUp(self, username='test_user', email='test_user@domain.com',
+              password1='super_secret_password1', password2='super_secret_password1'):
+        """
+        Creates a user by calling the '/register' endpoint.
+
+        Parameters
+        __________
+        username : str
+        email : str
+        password1 : str
+        password2 : str
+        """
+
         self.user_credentials = {
-            'username': 'test_user',
-            'email': 'test_user@domain.com',
-            'password1': 'super_secret_password1',
-            'password2': 'super_secret_password1'
+            'username': username,
+            'email': email,
+            'password1': password1,
+            'password2': password2
         }
 
         self.client.post(reverse('register'), self.user_credentials)
@@ -18,7 +30,14 @@ class RegisteredUsersTestBase(APITestCase):
 
     def authenticate(self, correct_access_token=True, correct_refresh_token=True):
         """
-            Sets access and refresh tokens as HttpOnly cookies.
+        Sets access and refresh tokens as HttpOnly cookies.
+
+        Parameters
+        __________
+        correct_access_token : bool
+            Specifies whether the access token being set is supposed to be the correct one. True by default.
+        correct_refresh_token : bool
+            Specifies whether the refresh token being set is supposed to be the correct one. True by default.
         """
 
         tokens = self.client.post(reverse('token_obtain_pair'),
@@ -44,17 +63,3 @@ class RegisteredUsersTestBase(APITestCase):
 
         self.client.cookies['refresh']['httponly'] = True
         self.client.cookies['refresh']['secure'] = True
-
-    # def set_access_token_as_http_only_cookie(self, correct_token=True):
-    #     # Set HTTP-only cookies
-    #     if correct_token:
-    #         self.client.cookies = SimpleCookie({
-    #             'access': self.access_token
-    #         })
-    #     else:
-    #         self.client.cookies = SimpleCookie({
-    #             'access': 'abcd'
-    #         })
-    #
-    #     # Mark the cookie as HTTP-only
-    #     self.client.cookies['access']['httponly'] = True

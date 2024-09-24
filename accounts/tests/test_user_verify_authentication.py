@@ -6,11 +6,11 @@ from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 class UserAuthenticationVerificationTest(RegisteredUsersTestBase):
     """
+    Test class for '/check_auth' endpoint.
+
+    Command to run the tests of this class:
         make test module=accounts.tests.test_user_verify_authentication.UserAuthenticationVerificationTest
     """
-
-    def setUp(self):
-        super().setUp()
 
     def test_verify_authentication_with_correct_token(self):
         super().authenticate()

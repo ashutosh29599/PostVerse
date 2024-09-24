@@ -6,11 +6,11 @@ from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 class UserLogoutTest(RegisteredUsersTestBase):
     """
+    Test class for '/logout' endpoint.
+
+    Command to run the tests of this class:
         make test module=accounts.tests.test_user_logout.UserLogoutTest
     """
-
-    def setUp(self):
-        super().setUp()
 
     def test_user_logout(self):
         super().authenticate()

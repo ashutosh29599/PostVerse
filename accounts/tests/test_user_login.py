@@ -6,6 +6,9 @@ from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 class UserLoginTest(RegisteredUsersTestBase):
     """
+    Test class for '/login' endpoint.
+
+    Command to run the tests of this class:
         make test module=accounts.tests.test_user_login_token.UserLoginTokenTest
     """
 

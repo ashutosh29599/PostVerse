@@ -1,13 +1,20 @@
 from django.shortcuts import reverse
 from rest_framework import status
 
-from .user_profile_tests import UserProfileTest
+from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 
-class UserProfileFetchTest(UserProfileTest):
+class UserProfileFetchTest(RegisteredUsersTestBase):
     """
+    Test class for '/profile' endpoint.
+
+    Command to run the tests of this class:
         make test module=profiles.tests.test_user_profile_fetch.UserProfileFetchTest
     """
+
+    def setUp(self, *args, **kwargs):
+        super().setUp(*args, **kwargs)
+        super().authenticate()
 
     def test_fetch_user_profile(self):
         response = self.client.get(reverse('profile', kwargs={'username': self.user_credentials['username']}))

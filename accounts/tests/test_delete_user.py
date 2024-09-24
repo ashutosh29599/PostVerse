@@ -6,11 +6,14 @@ from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
 
 class UserDeletionTest(RegisteredUsersTestBase):
     """
+    Test class for '/delete_user' endpoint.
+
+    Command to run the tests of this class:
         make test module=accounts.tests.test_delete_user.UserDeletionTest
     """
 
-    def setUp(self):
-        super().setUp()
+    def setUp(self, *args, **kwargs):
+        super().setUp(*args, **kwargs)
         super().authenticate()
 
     def test_delete_user(self):

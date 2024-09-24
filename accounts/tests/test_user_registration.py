@@ -8,6 +8,9 @@ from profiles.models import Profile
 
 class UserRegistrationTest(APITestCase):
     """
+    Test class for '/register' endpoint.
+
+    Command to run the tests of this class:
         make test module=accounts.tests.test_user_registration.UserRegistrationTest
     """
 
