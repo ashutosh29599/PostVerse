@@ -40,21 +40,20 @@ class RegisteredUsersTestBase(APITestCase):
             Specifies whether the refresh token being set is supposed to be the correct one. True by default.
         """
 
-        tokens = self.client.post(reverse('token_obtain_pair'),
-                                  data={
-                                      'username': self.user_credentials['username'],
-                                      'password': self.user_credentials['password1']
-                                  }).json()
+        tokens = self.client.post(reverse('login'), data={
+            'username': self.user_credentials['username'],
+            'password': self.user_credentials['password1']
+        })
 
         self.client.cookies = SimpleCookie()
 
         if correct_access_token:
-            self.client.cookies['access'] = tokens['access']
+            self.client.cookies['access'] = tokens.cookies['access'].value
         else:
             self.client.cookies['access'] = 'abcd'
 
         if correct_refresh_token:
-            self.client.cookies['refresh'] = tokens['refresh']
+            self.client.cookies['refresh'] = tokens.cookies['refresh'].value
         else:
             self.client.cookies['refresh'] = 'wxyz'
 

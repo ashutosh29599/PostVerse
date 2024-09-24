@@ -1,5 +1,4 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import (RegisterUserAPIView,
                     LoginUserAPIView,
@@ -18,6 +17,5 @@ urlpatterns = [
     path('delete-user/', DeleteUserAPIView.as_view(), name='delete_user'),
 
     # JWT authentication URLs
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),    # To be deprecated
     path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh')
 ]
