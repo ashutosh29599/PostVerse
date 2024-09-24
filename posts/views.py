@@ -33,7 +33,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         if 'text' not in request.data and 'photo' not in request.data:
             return Response(
-                {'detail': 'A post must either have text or photo or both.'},
+                {'detail': 'A post must either have text or photo or both'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
