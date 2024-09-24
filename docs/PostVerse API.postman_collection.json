@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "43d960ae-c87d-4686-a063-2115d7e31e54",
 		"name": "PostVerse API",
-		"description": "Version: v0.3.0\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
+		"description": "Version: v1.0.0\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24526531"
 	},
@@ -17,7 +17,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"test_user\",\n    \"email\": \"test_user@domain.com\",\n    \"password1\": \"super_secret_pwd_1\",\n    \"password2\": \"super_secret_pwd_1\"\n}",
+							"raw": "{\n    \"username\": \"test_user1\",\n    \"email\": \"test_user1@domain.com\",\n    \"password1\": \"super_secret_pwd_1\",\n    \"password2\": \"super_secret_pwd_1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -46,13 +46,13 @@
 					"response": []
 				},
 				{
-					"name": "Get Access & Refresh Tokens",
+					"name": "User Login",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"test_user\",\n    \"password\": \"super_secret_pwd_1\"\n}",
+							"raw": "{\n    \"username\": \"test_user1\",\n    \"password\": \"super_secret_pwd_1\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -60,7 +60,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/accounts/token/",
+							"raw": "http://127.0.0.1:8000/api/accounts/login/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -72,32 +72,33 @@
 							"path": [
 								"api",
 								"accounts",
-								"token",
+								"login",
 								""
 							]
 						},
-						"description": "This endpoint is used for authenticating an existing user. It returns a pair of tokens—an access token and a refresh token—which can be used for making authenticated API requests.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/token/`\n    \n- **Requires:** `username`, `password`\n    \n- **Response:** Access Token & Refresh Token"
+						"description": "This endpoint allows users to log in by providing their username and password. Upon successful login, the client is sent the user's JWT access and refresh tokens as HttpOnly cookies.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/login/`\n    \n- **Requires:** `username`, `password`\n    \n- **Response:** Success or error message. If successful, access and refresh tokens as HttpOnly cookies."
 					},
 					"response": []
 				},
 				{
-					"name": "Refresh Token",
+					"name": "User Logout",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNjQzNTgwOCwiaWF0IjoxNzI2NDM0MDA4LCJqdGkiOiJlZDVkOTE4OTI0NWY0ZWFhODMxMjAwNTcwNDE4NmIxOSIsInVzZXJfaWQiOjV9.vMlNm3oh5ZoMhcOVS-70rbqEWXrHJh4AoCHbkq1v-_w",
-									"type": "string"
-								}
-							]
-						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "access",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjExMjYyLCJpYXQiOjE3MjcxMjQ4NjIsImp0aSI6IjI5YmM1ZDk4NjU5OTQ0MTM4NTkxYjI3N2U4MGVhNmQ1IiwidXNlcl9pZCI6MTZ9.9-GhFRxX8RMCuAm0I-AaGw00RtG_BkkE4LEExmRzscs",
+								"type": "text"
+							},
+							{
+								"key": "refresh",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNzEyNjY2MiwiaWF0IjoxNzI3MTI0ODYyLCJqdGkiOiI1ZTNmMzUwM2M1YjY0NjRkYjBlOTZmZGQ3MDJjMDM4OCIsInVzZXJfaWQiOjE2fQ.I7sOiz1uGeQ5VbzitsTRmSls4ysykaL7tUkuqrH1FY0",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"refresh\": <access-token>\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -105,7 +106,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/accounts/token/refresh/",
+							"raw": "http://127.0.0.1:8000/api/accounts/logout/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -117,12 +118,52 @@
 							"path": [
 								"api",
 								"accounts",
-								"token",
-								"refresh",
+								"logout",
 								""
 							]
 						},
-						"description": "This endpoint allows users to refresh their access token using a valid refresh token. This enables continuous access without requiring the user to re-authenticate, enhancing security and usability.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/token/refresh/`\n    \n- **Requires:** Refresh Token granted during login\n    \n- **Response:** A new Access Token"
+						"description": "This endpoint allows logged in users to log out. The user's JWT access and refresh tokens are deleted in the reponse.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/logout/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** Success message or Errors"
+					},
+					"response": []
+				},
+				{
+					"name": "Check Auth",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "access",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjExMjYyLCJpYXQiOjE3MjcxMjQ4NjIsImp0aSI6IjI5YmM1ZDk4NjU5OTQ0MTM4NTkxYjI3N2U4MGVhNmQ1IiwidXNlcl9pZCI6MTZ9.9-GhFRxX8RMCuAm0I-AaGw00RtG_BkkE4LEExmRzscs",
+								"type": "text"
+							},
+							{
+								"key": "refresh",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNzEyNjY2MiwiaWF0IjoxNzI3MTI0ODYyLCJqdGkiOiI1ZTNmMzUwM2M1YjY0NjRkYjBlOTZmZGQ3MDJjMDM4OCIsInVzZXJfaWQiOjE2fQ.I7sOiz1uGeQ5VbzitsTRmSls4ysykaL7tUkuqrH1FY0",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/accounts/check-auth/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"accounts",
+								"check-auth",
+								""
+							]
+						},
+						"description": "This endpoint allows the client to verify whether a user is logged in. The client sends a request with an access token as HttpOnly cookie. This token is verified and if valid, the client is sent a success message alongwith the user's username.\n\n- **Method:** `GET`\n    \n- **Path:** `/api/accounts/check-auth/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** Success message alongwith the user's username, if successful."
 					},
 					"response": []
 				},
@@ -130,17 +171,16 @@
 					"name": "Change Password",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NTIwNDA4LCJpYXQiOjE3MjY0MzQwMDgsImp0aSI6ImRhMDgwZTgxYmQ1YjQzMWZiOTM1MDAyYjZiZTRlY2RhIiwidXNlcl9pZCI6NX0.JmmWxj66BXqOjvLV2hJJqC_oLPOQcgIXILWWk0jbqf4",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "access",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI3MjExMjYyLCJpYXQiOjE3MjcxMjQ4NjIsImp0aSI6IjI5YmM1ZDk4NjU5OTQ0MTM4NTkxYjI3N2U4MGVhNmQ1IiwidXNlcl9pZCI6MTZ9.9-GhFRxX8RMCuAm0I-AaGw00RtG_BkkE4LEExmRzscs",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"old_password\": \"super_secret_pwd_1\",\n    \"new_password1\": \"new_secret_pwd1\",\n    \"new_password2\": \"new_secret_pwd1\"\n}",
@@ -167,7 +207,7 @@
 								""
 							]
 						},
-						"description": "This endpoint allows authenticated users to change their password. Users must provide their current password and confirm the new password. The new password is validated and updated upon success\n\n- **Method:** `PUT`\n    \n- **Path:** `/api/change-password/`\n    \n- **Requires:** `old_password`, `new_password1`, `new_password2`\n    \n- **Response:** Success message indicating password change"
+						"description": "This endpoint allows authenticated users to change their password. Users must provide their current password and confirm the new password. The new password is validated and updated upon success.\n\n- **Method:** `PUT`\n    \n- **Path:** `/api/change-password/`\n    \n- **Requires:** `old_password`, `new_password1`, `new_password2`. User must be authenticated and have a valid access token.\n    \n- **Response:** Success message indicating password change or failure message."
 					},
 					"response": []
 				},
@@ -175,14 +215,7 @@
 					"name": "Delete User",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NTIwNjYxLCJpYXQiOjE3MjY0MzQyNjEsImp0aSI6ImIzMWY3YmI0YzAzOTQ2NzBiMDc3YjI2N2ZkYmJmZjY5IiwidXNlcl9pZCI6Nn0.fryze88GLVDasqfT_8EYboAAEgH3oGAj1wvnIxP1kFU",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "DELETE",
 						"header": [],
@@ -207,12 +240,58 @@
 								""
 							]
 						},
-						"description": "This endpoint allows authenticated users to delete their account. Users must be logged in.\n\n- **Method:** `DELETE`\n    \n- **Path:** `/api/delete-user/`\n    \n- **Requires:** Access token granted during login\n    \n- **Response:** Successful user deletion message"
+						"description": "This endpoint allows authenticated users to delete their account. Users must be logged in.\n\n- **Method:** `DELETE`\n    \n- **Path:** `/api/accounts/delete-user/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** Successful user deletion message or failure message."
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "refresh",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IdpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmnzaCIsImV4cCI6MTcyNzEyNjY2MiwiaWF0IjoxNzI3MTI0ODYyLCJqdGkiOiI1ZTNmMzUwM2M1YjY0NjRkYjBlOTZmZGQ3MDJjMDM4OCIsInVzZXJfaWQiOjE2fQ.I7sOiz1uGeQ5VbzitsTRmSls4ysykaL7tUkuqrH1FY0",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcyNzEyMzQzNCwiaWF0IjoxNzI3MTIxNjM0LCJqdGkiOiI5ZDFlYTBiMzdlYjc0ZGU3YjJjMjRkNjE5ZGRmNTVkZiIsInVzZXJfaWQiOjF9.7xB1lSyHH3SkFidKJQ9MXzwadHGmj0hZvFTqRgIUyqg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/accounts/token/refresh/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"accounts",
+								"token",
+								"refresh",
+								""
+							]
+						},
+						"description": "This endpoint allows users to refresh their access token using a valid refresh token. This enables continuous access without requiring the user to re-authenticate, enhancing security and usability.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/token/refresh/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** A new Access Token as HttpOnly cookie."
 					},
 					"response": []
 				}
 			],
-			"description": "This sections contains all user authentication and account management functionalities in the PostVerse API. These endpoints enable developers to integrate secure user registration, authentication, token management, and password change into their applications. Using JWT (JSON Web Tokens), this API ensures secure and efficient user authentication workflows, while providing methods for users to manage their own credentials.\n\n#### Endpoints\n\n1. Register a New User: Allows users to sign up by providing a username, password, and email.\n    \n2. Obtain Access and Refresh Token (Login): Authenticates users and returns tokens for secure API access.\n    \n3. Refresh Token: Generates a new access token using a valid refresh token.\n    \n4. Change Password: Allows authenticated users to change their passwords securely."
+			"description": "This sections contains all user authentication and account management functionalities in the PostVerse API. These endpoints enable developers to integrate secure user registration, authentication, token management, and password change into their applications. Using JWT (JSON Web Tokens), stored as HttpOnly cookies, this API ensures secure and efficient user authentication workflows, while providing methods for users to manage their own credentials.\n\n#### Endpoints\n\n1. Register a New User: Allows users to sign up by providing a username, password, and email.\n    \n2. Logging a User In: Allows a user to log in by providing the username and password.\n    \n3. Logging a User Out: Allows a user to log out and have their tokens deleted from the cookies.\n    \n4. Checking Authentication: Allows the client to check verify whether the user is logged in and get their username.\n    \n5. Changing Password: Allows authenticated users to change their passwords securely.\n    \n6. Deleting a User: Allows an authenticated user to delete their account.\n    \n7. Refresh Token: Generates a new access token using a valid refresh token."
 		},
 		{
 			"name": "Profiles",
@@ -240,7 +319,7 @@
 								""
 							]
 						},
-						"description": "This endpoint allows users to fetch any user's profile. Users must provide the username of the user whose profile details they wish to fetch.\n\n- **Method:** `GET`\n    \n- **Path:** `api/profiles/profile/test_user/`\n    \n- **Requires:** Profile owner's username\n    \n- **Response:** Profile details (first name, last name, bio, photo)"
+						"description": "This endpoint allows users to fetch any user's profile. Users must provide the username of the user whose profile details they wish to fetch.\n\n- **Method:** `GET`\n    \n- **Path:** `api/profiles/profile/test_user/`\n    \n- **Requires:** Profile owner's username.\n    \n- **Response:** Profile details (first name, last name, bio, photo)"
 					},
 					"response": []
 				},
@@ -248,14 +327,7 @@
 					"name": "Edit User Profile",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NTIwNDA4LCJpYXQiOjE3MjY0MzQwMDgsImp0aSI6ImRhMDgwZTgxYmQ1YjQzMWZiOTM1MDAyYjZiZTRlY2RhIiwidXNlcl9pZCI6NX0.JmmWxj66BXqOjvLV2hJJqC_oLPOQcgIXILWWk0jbqf4",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "PATCH",
 						"header": [],
@@ -285,7 +357,7 @@
 								""
 							]
 						},
-						"description": "This endpoint allows authenticated users to update their profile.\n\n- **Method:** `PATCH`\n    \n- **Path:** `api/profiles/edit_profile/`\n    \n- **Requires:** Authenticated user's user id\n    \n- **Response:** Success/Failure message"
+						"description": "This endpoint allows authenticated users to update their profile.\n\n- **Method:** `PATCH`\n    \n- **Path:** `api/profiles/edit_profile/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** Success/Failure message."
 					},
 					"response": []
 				}
@@ -303,7 +375,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjkwOTg4LCJpYXQiOjE3MjY2MDQ1ODgsImp0aSI6IjA4YWFlMWY2ZDEwMTQyMjFiMmQ4MzYyYjI3ZDE4YzZkIiwidXNlcl9pZCI6N30.9WgzLSn5-P52LY-_FSTFxqYHSRqtzkf7uVjVT9QfgLY",
 									"type": "string"
 								}
 							]
@@ -311,16 +383,23 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"This is the test post!\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "text",
+									"value": "twelve",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": "/Users/ashutosh/Desktop/Grad Photos/Ashutosh Graduation Photoshoot/DSC03716.JPG",
+									"disabled": true
 								}
-							}
+							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/posts/create/",
+							"raw": "http://127.0.0.1:8000/api/posts/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -332,7 +411,6 @@
 							"path": [
 								"api",
 								"posts",
-								"create",
 								""
 							]
 						},
@@ -420,6 +498,30 @@
 							]
 						},
 						"description": "This endpoint allows authenticated users to delete their post.\n\n- **Method:** `DELETE`\n    \n- **Path:** `api/posts//delete/`\n    \n- **Requires:** Post id\n    \n- **Response:** `204 NO CONTENT` HTTP status code if successful. `404 NOT FOUND` HTTP status code if the post id is invalid."
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/posts/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"posts",
+								""
+							]
+						}
 					},
 					"response": []
 				}
