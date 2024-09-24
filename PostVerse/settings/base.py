@@ -30,19 +30,19 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_extensions',
-    'corsheaders',
-] + [
-    'accounts',
-    'profiles',
-    'posts',
-]
+                     'django.contrib.admin',
+                     'django.contrib.auth',
+                     'django.contrib.contenttypes',
+                     'django.contrib.sessions',
+                     'django.contrib.messages',
+                     'django.contrib.staticfiles',
+                     'django_extensions',
+                     'corsheaders',
+                 ] + [
+                     'accounts',
+                     'profiles',
+                     'posts',
+                 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -145,8 +145,6 @@ CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 # CSRF_COOKIE_NAME = "csrftoken"
 # CSRF_HEADER_NAME = "HTTP_X_CSRFTOKEN"
 # CSRF_USE_SESSIONS = False  # Use cookie-based CSRF
-
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

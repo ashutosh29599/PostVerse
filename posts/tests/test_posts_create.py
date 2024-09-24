@@ -1,9 +1,8 @@
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 from rest_framework import status
 
 from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
-from posts.tests.utils.generate_post_data import generate_post_data
+from posts.tests.utils.PostFactory import PostFactory
 
 
 class CreatePostTest(RegisteredUsersTestBase):
@@ -19,7 +18,7 @@ class CreatePostTest(RegisteredUsersTestBase):
         super().authenticate()
 
     def test_create_a_post_with_text_only(self):
-        data = generate_post_data(text='This is a test post!')
+        data = PostFactory.generate_post_data(text='This is a test post!', photo=None)
 
         response = self.client.post(reverse('post-list'), data=data)
 
@@ -30,7 +29,7 @@ class CreatePostTest(RegisteredUsersTestBase):
 
     def test_create_a_post_with_photo_only(self):
         photo = 'unit_test_image'
-        data = generate_post_data(text=None, photo=photo)
+        data = PostFactory.generate_post_data(text=None, photo=photo)
 
         response = self.client.post(reverse('post-list'), data=data, format='multipart')
 
@@ -41,7 +40,7 @@ class CreatePostTest(RegisteredUsersTestBase):
 
     def test_create_a_post_with_text_and_photo(self):
         photo = 'unit_test_image'
-        data = generate_post_data(text='This is a test post!', photo=photo)
+        data = PostFactory.generate_post_data(text='This is a test post!', photo=photo)
 
         response = self.client.post(reverse('post-list'), data=data, format='multipart')
 

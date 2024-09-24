@@ -148,5 +148,5 @@ class CustomTokenRefreshView(TokenRefreshView):
                 response.delete_cookie('refresh')
 
             return response
-        except (InvalidToken, TokenError) as error:
+        except (InvalidToken, TokenError):
             return Response({'detail': 'Invalid or expired refresh token'}, status=status.HTTP_401_UNAUTHORIZED)
