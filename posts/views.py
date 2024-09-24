@@ -26,7 +26,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         username = self.request.query_params.get('username')
         if username:
-            return Post.objects.filter(user__username=username)  # type: ignore
+            return Post.objects.filter(user__username=username).order_by('-created_at')  # type: ignore
 
         return Post.objects.all().order_by('-created_at')  # type: ignore
 
