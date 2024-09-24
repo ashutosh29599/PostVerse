@@ -4,7 +4,6 @@ from django.db import models
 
 
 class Post(models.Model):
-    # TODO: Text or photo -- either can be optional, but not both.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     text = models.TextField(max_length=240, blank=True, null=True)

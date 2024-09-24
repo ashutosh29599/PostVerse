@@ -28,7 +28,7 @@ class PostViewSet(viewsets.ModelViewSet):
         if username:
             return Post.objects.filter(user__username=username)  # type: ignore
 
-        return Post.objects.all()  # type: ignore
+        return Post.objects.all().order_by('-created_at')  # type: ignore
 
     def create(self, request, *args, **kwargs):
         if 'text' not in request.data and 'photo' not in request.data:
