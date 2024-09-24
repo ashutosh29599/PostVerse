@@ -10,8 +10,8 @@ class CreatePostTest(RegisteredUsersTestBase):
         make test module=posts.tests.test_posts.CreatePostTest
     """
 
-    def setUp(self):
-        super().setUp()
+    def setUp(self, *args, **kwargs):
+        super().setUp(*args, **kwargs)
         super().authenticate()
 
     def test_create_a_post_with_text_only(self):
@@ -26,7 +26,7 @@ class CreatePostTest(RegisteredUsersTestBase):
         self.assertIsNone(response.json()['photo'])
 
     def test_create_a_post_with_photo_only(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "photo": SimpleUploadedFile(
                     name='unit_test_image.png',
@@ -41,7 +41,7 @@ class CreatePostTest(RegisteredUsersTestBase):
         self.assertIn('unit_test_image', response.json()['photo'])
 
     def test_create_a_post_with_text_and_photo(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "text": "This is a test post!",
                 "photo": SimpleUploadedFile(
@@ -107,7 +107,7 @@ class EditPostTest(RegisteredUsersTestBase):
         self.assertNotEqual(response.json()['created_at'], response.json()['updated_at'])
 
     def test_edit_post_with_photo_alone(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "photo": SimpleUploadedFile(
                     name='unit_test_image.png',
@@ -117,7 +117,7 @@ class EditPostTest(RegisteredUsersTestBase):
             response = self.client.post(reverse('post-list'), data=data, format='multipart')
             post_id, post_user = response.json()['id'], response.json()['user']
 
-        with open('posts/tests/images/unit_test_image2.png', 'rb') as image:
+        with open('tests/images/unit_test_image2.png', 'rb') as image:
             data = {
                 "photo": SimpleUploadedFile(
                     name='unit_test_image2.png',
@@ -133,7 +133,7 @@ class EditPostTest(RegisteredUsersTestBase):
         self.assertNotEqual(response.json()['created_at'], response.json()['updated_at'])
 
     def test_edit_post_with_both_text_and_photo_edit_both(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "text": "This is a test post!",
                 "photo": SimpleUploadedFile(
@@ -144,7 +144,7 @@ class EditPostTest(RegisteredUsersTestBase):
             response = self.client.post(reverse('post-list'), data=data, format='multipart')
             post_id, post_user = response.json()['id'], response.json()['user']
 
-        with open('posts/tests/images/unit_test_image2.png', 'rb') as image:
+        with open('tests/images/unit_test_image2.png', 'rb') as image:
             data = {
                 "text": "This is the edited post!",
                 "photo": SimpleUploadedFile(
@@ -162,7 +162,7 @@ class EditPostTest(RegisteredUsersTestBase):
         self.assertNotEqual(response.json()['created_at'], response.json()['updated_at'])
 
     def test_edit_post_with_both_text_and_photo_edit_text_only(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "text": "This is a test post!",
                 "photo": SimpleUploadedFile(
@@ -187,7 +187,7 @@ class EditPostTest(RegisteredUsersTestBase):
         self.assertNotEqual(response.json()['created_at'], response.json()['updated_at'])
 
     def test_edit_post_with_both_text_and_photo_edit_photo_only(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "text": "This is a test post!",
                 "photo": SimpleUploadedFile(
@@ -198,7 +198,7 @@ class EditPostTest(RegisteredUsersTestBase):
             response = self.client.post(reverse('post-list'), data=data, format='multipart')
             post_id, post_user = response.json()['id'], response.json()['user']
 
-        with open('posts/tests/images/unit_test_image2.png', 'rb') as image:
+        with open('tests/images/unit_test_image2.png', 'rb') as image:
             data = {
                 "photo": SimpleUploadedFile(
                     name='unit_test_image2.png',
@@ -215,7 +215,7 @@ class EditPostTest(RegisteredUsersTestBase):
         self.assertNotEqual(response.json()['created_at'], response.json()['updated_at'])
 
     def test_edit_post_with_both_text_and_photo_edit_neither(self):
-        with open('posts/tests/images/unit_test_image.png', 'rb') as image:
+        with open('tests/images/unit_test_image.png', 'rb') as image:
             data = {
                 "text": "This is a test post!",
                 "photo": SimpleUploadedFile(
