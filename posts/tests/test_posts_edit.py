@@ -1,4 +1,3 @@
-from django.shortcuts import reverse
 from rest_framework import status
 
 from tests.utils.registered_users_tests_base import RegisteredUsersTestBase

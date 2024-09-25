@@ -19,7 +19,7 @@ class DeletePostTest(RegisteredUsersTestBase):
 
     def test_delete_a_post(self):
         post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo='unit_test_image')
-        post_id, post_user = post.json()['id'], post.json()['user']
+        post_id = post.json()['id']
 
         response = self.client.get(reverse('post-list'))
         self.assertEqual(1, response.json()['count'])
@@ -32,7 +32,7 @@ class DeletePostTest(RegisteredUsersTestBase):
 
     def test_delete_a_post_with_text_only(self):
         post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo=None)
-        post_id, post_user = post.json()['id'], post.json()['user']
+        post_id = post.json()['id']
 
         response = self.client.get(reverse('post-list'))
         self.assertEqual(1, response.json()['count'])
@@ -45,7 +45,7 @@ class DeletePostTest(RegisteredUsersTestBase):
 
     def test_delete_a_post_with_photo_only(self):
         post = PostFactory.create_a_post(client=self.client, text=None, photo='unit_test_image')
-        post_id, post_user = post.json()['id'], post.json()['user']
+        post_id = post.json()['id']
 
         response = self.client.get(reverse('post-list'))
         self.assertEqual(1, response.json()['count'])
@@ -58,7 +58,7 @@ class DeletePostTest(RegisteredUsersTestBase):
 
     def test_delete_an_already_deleted_post(self):
         post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo='unit_test_image')
-        post_id, post_user = post.json()['id'], post.json()['user']
+        post_id = post.json()['id']
 
         response = self.client.get(reverse('post-list'))
         self.assertEqual(1, response.json()['count'])
