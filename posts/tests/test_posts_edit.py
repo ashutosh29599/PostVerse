@@ -21,11 +21,7 @@ class EditPostTest(RegisteredUsersTestBase):
         post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo=None)
         post_id, post_user = post.json()['id'], post.json()['user']
 
-        data = {
-            'text': 'This is the edited post!'
-        }
-
-        response = self.client.patch(reverse('post-detail', kwargs={'pk': post_id}), data=data)
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id, text='This is the edited post!')
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('This is the edited post!', response.json()['text'])
@@ -38,9 +34,7 @@ class EditPostTest(RegisteredUsersTestBase):
         post_id, post_user = post.json()['id'], post.json()['user']
 
         photo = 'unit_test_image2'
-        data = PostFactory.generate_post_data(text=None, photo=photo)
-
-        response = self.client.patch(reverse('post-detail', kwargs={'pk': post_id}), data=data, format='multipart')
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id, text=None, photo=photo)
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertIn(photo, response.json()['photo'])
@@ -53,9 +47,8 @@ class EditPostTest(RegisteredUsersTestBase):
         post_id, post_user = post.json()['id'], post.json()['user']
 
         photo = 'unit_test_image2'
-        data = PostFactory.generate_post_data(text='This is the edited post!', photo=photo)
-
-        response = self.client.patch(reverse('post-detail', kwargs={'pk': post_id}), data=data, format='multipart')
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id,
+                                             text='This is the edited post!', photo=photo)
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('This is the edited post!', response.json()['text'])
@@ -68,10 +61,8 @@ class EditPostTest(RegisteredUsersTestBase):
         post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo='unit_test_image')
         post_id, post_user = post.json()['id'], post.json()['user']
 
-        data = {
-            "text": "This is the edited post!"
-        }
-        response = self.client.patch(reverse('post-detail', kwargs={'pk': post_id}), data=data, format='multipart')
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id,
+                                             text='This is the edited post!', photo=None)
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('This is the edited post!', response.json()['text'])
@@ -85,9 +76,7 @@ class EditPostTest(RegisteredUsersTestBase):
         post_id, post_user = post.json()['id'], post.json()['user']
 
         photo = 'unit_test_image2'
-        data = PostFactory.generate_post_data(text=None, photo=photo)
-
-        response = self.client.patch(reverse('post-detail', kwargs={'pk': post_id}), data=data, format='multipart')
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id, text=None, photo=photo)
 
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('This is a test post!', response.json()['text'])
@@ -100,7 +89,7 @@ class EditPostTest(RegisteredUsersTestBase):
         post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo='unit_test_image')
         post_id = post.json()['id']
 
-        response = self.client.patch(reverse('post-detail', kwargs={'pk': post_id}), data={}, format='multipart')
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id, text=None, photo=None)
 
         self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
         self.assertEqual('A post must either have text or photo or both.', response.json()['detail'])

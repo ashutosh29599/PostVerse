@@ -24,3 +24,9 @@ class PostFactory:
         data = PostFactory.generate_post_data(text=text, photo=photo)
 
         return client.post(reverse('post-list'), data=data, format='multipart')
+
+    @staticmethod
+    def update_a_post(client, post_id, text=None, photo=None):
+        data = PostFactory.generate_post_data(text=text, photo=photo)
+
+        return client.patch(reverse('post-detail', kwargs={'pk': post_id}), data=data, format='multipart')
