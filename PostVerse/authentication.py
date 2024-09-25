@@ -18,7 +18,7 @@ class CookieJWTAuthentication(BaseAuthentication):
         try:
             # Decode the access token
             validated_token = AccessToken(access_token)
-        except Exception as e:
+        except Exception:
             raise AuthenticationFailed('Invalid token')
 
         user_id = validated_token['user_id']
