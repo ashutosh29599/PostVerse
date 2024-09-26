@@ -27,10 +27,18 @@ class PostViewSet(viewsets.ModelViewSet):
         username = self.request.query_params.get('username')
         sort_by = self.request.query_params.get('sort-by', '-created_at')
 
-        if username:
-            return Post.objects.filter(user__username=username).order_by(sort_by)  # type: ignore
+        queryset = Post.objects.select_related('user').order_by(sort_by)  # type: ignore
 
-        return Post.objects.all().order_by(sort_by)  # type: ignore
+        if username:
+            queryset = queryset.filter(user__username=username)
+
+        return queryset
+
+        #
+        # if username:
+        #     return Post.objects.filter(user__username=username).order_by(sort_by)  # type: ignore
+        #
+        # return Post.objects.all().order_by(sort_by)  # type: ignore
 
     def create(self, request, *args, **kwargs):
         if 'text' not in request.data and 'photo' not in request.data:
