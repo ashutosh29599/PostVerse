@@ -16,6 +16,7 @@ from .serializers import UserRegistrationSerializer, ChangePasswordSerializer
 
 
 class RegisterUserAPIView(APIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     def post(self, request):
@@ -32,6 +33,7 @@ class RegisterUserAPIView(APIView):
 
 
 class LoginUserAPIView(APIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):

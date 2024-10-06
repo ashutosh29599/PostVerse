@@ -14,6 +14,9 @@ class PostPagination(PageNumberPagination):
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    """
+    Issue: Currently any authenticated user can update any post (even those that they don't own).
+    """
     queryset = Post.objects.all()  # type: ignore
     serializer_class = PostSerializer
     pagination_class = PostPagination
@@ -27,18 +30,13 @@ class PostViewSet(viewsets.ModelViewSet):
         username = self.request.query_params.get('username')
         sort_by = self.request.query_params.get('sort-by', '-created_at')
 
+        # select_related helps us add the 'user' in the response
         queryset = Post.objects.select_related('user').order_by(sort_by)  # type: ignore
 
         if username:
             queryset = queryset.filter(user__username=username)
 
         return queryset
-
-        #
-        # if username:
-        #     return Post.objects.filter(user__username=username).order_by(sort_by)  # type: ignore
-        #
-        # return Post.objects.all().order_by(sort_by)  # type: ignore
 
     def create(self, request, *args, **kwargs):
         if 'text' not in request.data and 'photo' not in request.data:
@@ -50,6 +48,10 @@ class PostViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
+        # TODO: Check the request.user == user making this request.
+        # Need to send the user_id/username/email/your choice of identifier in the data.
+        # request.user.id, request.user, request.user.username (same as prev), request.user.email all work.
+
         if 'text' not in request.data and 'photo' not in request.data:
             return Response(
                 {'detail': 'A post must either have text or photo or both.'},
