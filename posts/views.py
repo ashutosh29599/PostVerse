@@ -28,7 +28,17 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         username = self.request.query_params.get('username')
-        sort_by = self.request.query_params.get('sort-by', '-created_at')
+        sort_by = self.request.query_params.get('sort-by', 'latest_first')
+
+        match sort_by:
+            case 'latest_first':
+                sort_by = '-updated_at'
+            case 'oldest_first':
+                sort_by = 'updated_at'
+            case 'username_ascending':
+                sort_by = 'user__username'
+            case 'username_descending':
+                sort_by = '-user__username'
 
         # select_related helps us add the 'user' in the response
         queryset = Post.objects.select_related('user').order_by(sort_by)  # type: ignore

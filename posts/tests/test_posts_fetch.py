@@ -181,25 +181,26 @@ class SortedFetchPostTest(FetchPostTest):
         PostFactory.update_a_post(client=self.client, post_id=post_id_of_the_post_to_be_updated,
                                   text='This is the updated second test post!')
 
-        response = self.client.get(reverse('post-list'), data={
-            'sort-by': '-updated_at'
-        })
-        posts = response.json()['results']
+        for sort_by in ['-updated_at', 'latest_first']:
+            response = self.client.get(reverse('post-list'), data={
+                'sort-by': sort_by
+            })
+            posts = response.json()['results']
 
-        self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(3, response.json()['count'])
+            self.assertEqual(status.HTTP_200_OK, response.status_code)
+            self.assertEqual(3, response.json()['count'])
 
-        self.assertEqual(self.user.id, posts[0]['user'])
-        self.assertEqual('This is the updated second test post!', posts[0]['text'])
-        self.assertIn('unit_test_image2', posts[0]['photo'])
+            self.assertEqual(self.user.id, posts[0]['user'])
+            self.assertEqual('This is the updated second test post!', posts[0]['text'])
+            self.assertIn('unit_test_image2', posts[0]['photo'])
 
-        self.assertEqual(self.user.id, posts[1]['user'])
-        self.assertEqual('This is the third test post!', posts[1]['text'])
-        self.assertIn('unit_test_image', posts[1]['photo'])
+            self.assertEqual(self.user.id, posts[1]['user'])
+            self.assertEqual('This is the third test post!', posts[1]['text'])
+            self.assertIn('unit_test_image', posts[1]['photo'])
 
-        self.assertEqual(self.user.id, posts[2]['user'])
-        self.assertEqual('This is the first test post!', posts[2]['text'])
-        self.assertIn('unit_test_image', posts[2]['photo'])
+            self.assertEqual(self.user.id, posts[2]['user'])
+            self.assertEqual('This is the first test post!', posts[2]['text'])
+            self.assertIn('unit_test_image', posts[2]['photo'])
 
     def test_fetch_posts_ordered_by_update_date_oldest_first(self):
         PostFactory.create_a_post(client=self.client, text='This is the first test post!', photo='unit_test_image')
@@ -212,67 +213,70 @@ class SortedFetchPostTest(FetchPostTest):
         PostFactory.update_a_post(client=self.client, post_id=post_id_of_the_post_to_be_updated,
                                   text='This is the updated second test post!')
 
-        response = self.client.get(reverse('post-list'), data={
-            'sort-by': 'updated_at'
-        })
-        posts = response.json()['results']
+        for sort_by in ['updated_at', 'oldest_first']:
+            response = self.client.get(reverse('post-list'), data={
+                'sort-by': sort_by
+            })
+            posts = response.json()['results']
 
-        self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(3, response.json()['count'])
+            self.assertEqual(status.HTTP_200_OK, response.status_code)
+            self.assertEqual(3, response.json()['count'])
 
-        self.assertEqual(self.user.id, posts[0]['user'])
-        self.assertEqual('This is the first test post!', posts[0]['text'])
-        self.assertIn('unit_test_image', posts[0]['photo'])
+            self.assertEqual(self.user.id, posts[0]['user'])
+            self.assertEqual('This is the first test post!', posts[0]['text'])
+            self.assertIn('unit_test_image', posts[0]['photo'])
 
-        self.assertEqual(self.user.id, posts[1]['user'])
-        self.assertEqual('This is the third test post!', posts[1]['text'])
-        self.assertIn('unit_test_image', posts[1]['photo'])
+            self.assertEqual(self.user.id, posts[1]['user'])
+            self.assertEqual('This is the third test post!', posts[1]['text'])
+            self.assertIn('unit_test_image', posts[1]['photo'])
 
-        self.assertEqual(self.user.id, posts[2]['user'])
-        self.assertEqual('This is the updated second test post!', posts[2]['text'])
-        self.assertIn('unit_test_image2', posts[2]['photo'])
+            self.assertEqual(self.user.id, posts[2]['user'])
+            self.assertEqual('This is the updated second test post!', posts[2]['text'])
+            self.assertIn('unit_test_image2', posts[2]['photo'])
 
     def test_fetch_posts_ordered_by_username_ascending(self):
         first_user_id = self.user.id
 
         super().create_two_posts_from_two_different_users_and_switch_user()
 
-        response = self.client.get(reverse('post-list'), data={
-            'sort-by': 'user__username'
-        })
-        posts = response.json()['results']
+        for sort_by in ['user__username', 'username_ascending']:
+            response = self.client.get(reverse('post-list'), data={
+                'sort-by': sort_by
+            })
+            posts = response.json()['results']
 
-        self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(2, response.json()['count'])
+            self.assertEqual(status.HTTP_200_OK, response.status_code)
+            self.assertEqual(2, response.json()['count'])
 
-        self.assertEqual(first_user_id, posts[0]['user'])
-        self.assertEqual('This is the test post by the first user!', posts[0]['text'])
-        self.assertIn('unit_test_image', posts[0]['photo'])
+            self.assertEqual(first_user_id, posts[0]['user'])
+            self.assertEqual('This is the test post by the first user!', posts[0]['text'])
+            self.assertIn('unit_test_image', posts[0]['photo'])
 
-        self.assertEqual(self.user.id, posts[1]['user'])
-        self.assertEqual('This is the test post by the second user!', posts[1]['text'])
-        self.assertIn('unit_test_image2', posts[1]['photo'])
+            self.assertEqual(self.user.id, posts[1]['user'])
+            self.assertEqual('This is the test post by the second user!', posts[1]['text'])
+            self.assertIn('unit_test_image2', posts[1]['photo'])
 
     def test_fetch_posts_ordered_by_username_descending(self):
         first_user_id = self.user.id
 
         super().create_two_posts_from_two_different_users_and_switch_user()
 
-        response = self.client.get(reverse('post-list'), data={
-            'sort-by': '-user__username'
-        })
-        posts = response.json()['results']
+        for sort_by in ['-user__username', 'username_descending']:
+            response = self.client.get(reverse('post-list'), data={
+                'sort-by': sort_by
+            })
+            posts = response.json()['results']
 
-        self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(2, response.json()['count'])
+            self.assertEqual(status.HTTP_200_OK, response.status_code)
+            self.assertEqual(2, response.json()['count'])
 
-        self.assertEqual(self.user.id, posts[0]['user'])
-        self.assertEqual('This is the test post by the second user!', posts[0]['text'])
-        self.assertIn('unit_test_image2', posts[0]['photo'])
+            self.assertEqual(self.user.id, posts[0]['user'])
+            self.assertEqual('This is the test post by the second user!', posts[0]['text'])
+            self.assertIn('unit_test_image2', posts[0]['photo'])
 
-        self.assertEqual(first_user_id, posts[1]['user'])
-        self.assertEqual('This is the test post by the first user!', posts[1]['text'])
-        self.assertIn('unit_test_image', posts[1]['photo'])
+            self.assertEqual(first_user_id, posts[1]['user'])
+            self.assertEqual('This is the test post by the first user!', posts[1]['text'])
+            self.assertIn('unit_test_image', posts[1]['photo'])
 
 
 class PaginatedFetchPostTest(FetchPostTest):
