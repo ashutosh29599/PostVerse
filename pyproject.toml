@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "postverse"
-version = "1.0.1"
+version = "1.1.0"
 description = ""
 authors = ["ashutosh29599 <ashutosh29599@yahoo.co.in>"]
 license = "MIT"
