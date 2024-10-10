@@ -3,6 +3,36 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
 
+class UserSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source='profile.first_name', read_only=True)
+    last_name = serializers.CharField(source='profile.last_name', read_only=True)
+    photo = serializers.ImageField(source='profile.photo', read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'photo']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        include_fields = self.context.get('include_fields')
+        representation['username'] = instance.username
+
+        if include_fields.get('email', 'true').lower() == 'false':
+            representation.pop('email', None)
+
+        if include_fields.get('first_name', 'true').lower() == 'false':
+            representation.pop('first_name', None)
+
+        if include_fields.get('last_name', 'true').lower() == 'false':
+            representation.pop('last_name', None)
+
+        if include_fields.get('photo', 'true').lower() == 'false':
+            representation.pop('photo', None)
+
+        return representation
+
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)

@@ -1,12 +1,17 @@
-from django.urls import path
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
 
-from .views import (RegisterUserAPIView,
+from .views import (UserViewSet,
+                    RegisterUserAPIView,
                     LoginUserAPIView,
                     LogoutUserAPIView,
                     CheckAuthAPIView,
                     CustomTokenRefreshView,
                     DeleteUserAPIView,
                     ChangePasswordAPIView)
+
+router = DefaultRouter()
+router.register(r'', UserViewSet, basename='user')
 
 urlpatterns = [
     path('register/', RegisterUserAPIView.as_view(), name='register'),
@@ -17,5 +22,7 @@ urlpatterns = [
     path('delete-user/', DeleteUserAPIView.as_view(), name='delete_user'),
 
     # JWT authentication URLs
-    path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh')
+    path('token/refresh/', CustomTokenRefreshView.as_view(), name='token_refresh'),
+
+    path('', include(router.urls))
 ]

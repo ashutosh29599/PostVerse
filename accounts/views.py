@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.models import User
 from django.db import IntegrityError
-from rest_framework import status
+from rest_framework import viewsets, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -12,7 +13,33 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from PostVerse.authentication import CookieJWTAuthentication
 
 from profiles.models import Profile
-from .serializers import UserRegistrationSerializer, ChangePasswordSerializer
+from .serializers import UserSerializer, UserRegistrationSerializer, ChangePasswordSerializer
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['include_fields'] = {
+            'email': self.request.query_params.get('email', 'true'),
+            'first_name': self.request.query_params.get('first_name', 'true'),
+            'last_name': self.request.query_params.get('last_name', 'true'),
+            'photo': self.request.query_params.get('photo', 'false'),
+        }
+        return context
+
+    def get_queryset(self):
+        username = self.request.query_params.get('username')
+        queryset = User.objects.all()
+
+        if username:
+            queryset = queryset.filter(username=username)
+
+        return queryset
 
 
 class RegisterUserAPIView(APIView):

@@ -24,3 +24,11 @@ update: install migrate ;
 .PHONY: test
 test:
 	poetry run python3 manage.py test $(module)
+
+.PHONY: show-urls
+show-urls:
+	poetry run python3 manage.py show_urls
+
+.PHONY: shell
+shell:
+	 poetry run python3 manage.py shell
