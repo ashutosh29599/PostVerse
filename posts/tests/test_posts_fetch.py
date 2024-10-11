@@ -129,6 +129,47 @@ class FetchPostTest(RegisteredUsersTestBase):
         self.assertEqual('This is the first test post by the second user!', posts[1]['text'])
         self.assertIn('unit_test_image', posts[1]['photo'])
 
+    def test_fetch_posts_by_username_with_incorrect_case(self):
+        first_user_id = self.user.id
+
+        self.create_two_posts_from_two_different_users_and_switch_user()
+
+        response = self.client.get(reverse('post-list'), data={'username': 'Test_USER'})
+        post = response.json()['results'][0]
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(1, response.json()['count'])
+
+        self.assertEqual(first_user_id, post['user'])
+        self.assertEqual('This is the test post by the first user!', post['text'])
+        self.assertIn('unit_test_image', post['photo'])
+
+    def test_fetch_posts_fetch_multiple_posts_by_username_with_incorrect_case(self):
+        PostFactory.create_a_post(client=self.client, text='This is the test post by the first user!',
+                                  photo='unit_test_image')
+
+        # create another user and create a post with that user.
+        super().setUp(username='test_user2', email='test_user2@domain.com')
+        super().authenticate()
+        PostFactory.create_a_post(client=self.client, text='This is the first test post by the second user!',
+                                  photo='unit_test_image2')
+        PostFactory.create_a_post(client=self.client, text='This is the second test post by the second user!',
+                                  photo='unit_test_image2')
+
+        response = self.client.get(reverse('post-list'), data={'username': 'TEST_user2'})
+        posts = response.json()['results']
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(2, response.json()['count'])
+
+        self.assertEqual(self.user.id, posts[0]['user'])
+        self.assertEqual('This is the second test post by the second user!', posts[0]['text'])
+        self.assertIn('unit_test_image2', posts[0]['photo'])
+
+        self.assertEqual(self.user.id, posts[1]['user'])
+        self.assertEqual('This is the first test post by the second user!', posts[1]['text'])
+        self.assertIn('unit_test_image', posts[1]['photo'])
+
 
 class SortedFetchPostTest(FetchPostTest):
     """
@@ -427,3 +468,62 @@ class PaginatedFetchPostTest(FetchPostTest):
         self.assertEqual(15, response.json()['count'])
         self.assertEqual(5, len(response.json()['results']))
         self.assertIsNone(response.json()['next'])
+
+
+class SearchQueryFetchPostTest(FetchPostTest):
+    """
+    Test class for GET request to '/post-list' endpoint, with text query as a query parameter.
+
+    Command to run the tests of this class:
+        make test module=posts.tests.test_posts_fetch.SearchQueryFetchPostTest
+    """
+
+    def test_fetch_post_with_exact_text_query_matching(self):
+        PostFactory.create_a_post(client=self.client, text='This is the test post!', photo='unit_test_image')
+
+        response = self.client.get(reverse('post-list'), data={
+            'text': 'This is the test post!'
+        })
+        posts = response.json()['results']
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(1, response.json()['count'])
+
+        self.assertEqual(self.user.id, posts[0]['user'])
+        self.assertEqual('This is the test post!', posts[0]['text'])
+        self.assertIn('unit_test_image', posts[0]['photo'])
+
+    def test_fetch_post_with_partial_text_query_matching(self):
+        PostFactory.create_a_post(client=self.client, text='This is the test post!', photo='unit_test_image')
+
+        response = self.client.get(reverse('post-list'), data={
+            'text': 'test post'
+        })
+        posts = response.json()['results']
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(1, response.json()['count'])
+
+        self.assertEqual(self.user.id, posts[0]['user'])
+        self.assertEqual('This is the test post!', posts[0]['text'])
+        self.assertIn('unit_test_image', posts[0]['photo'])
+
+    def test_fetch_posts_with_partial_text_query_matching(self):
+        PostFactory.create_a_post(client=self.client, text='This is the test post!', photo='unit_test_image')
+        PostFactory.create_a_post(client=self.client, text='This is another test post!')
+
+        response = self.client.get(reverse('post-list'), data={
+            'text': 'test post',
+            'sort-by': 'oldest_first'
+        })
+        posts = response.json()['results']
+
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(2, response.json()['count'])
+
+        self.assertEqual(self.user.id, posts[0]['user'])
+        self.assertEqual('This is the test post!', posts[0]['text'])
+        self.assertIn('unit_test_image', posts[0]['photo'])
+
+        self.assertEqual(self.user.id, posts[1]['user'])
+        self.assertEqual('This is another test post!', posts[1]['text'])

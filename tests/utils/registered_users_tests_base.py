@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from http.cookies import SimpleCookie
 from rest_framework.test import APITestCase
+
+from tests.utils.create_user import create_user
 
 
 class RegisteredUsersTestBase(APITestCase):
@@ -18,15 +19,11 @@ class RegisteredUsersTestBase(APITestCase):
         password2 : str
         """
 
-        self.user_credentials = {
-            'username': username,
-            'email': email,
-            'password1': password1,
-            'password2': password2
-        }
-
-        self.client.post(reverse('register'), self.user_credentials)
-        self.user = User.objects.get(username=self.user_credentials['username'])
+        self.user_credentials, self.user = create_user(self.client,
+                                                       username=username,
+                                                       email=email,
+                                                       password1=password1,
+                                                       password2=password2)
 
     def authenticate(self, correct_access_token=True, correct_refresh_token=True):
         """

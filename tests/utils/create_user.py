@@ -12,4 +12,4 @@ def create_user(client, username='test_user', email='test_user@domain.com',
     }
 
     client.post(reverse('register'), user_credentials)
-    return User.objects.get(username=user_credentials['username'])
+    return user_credentials, User.objects.get(username=user_credentials['username'])

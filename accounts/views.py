@@ -34,10 +34,14 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         username = self.request.query_params.get('username')
+        similar = self.request.query_params.get('similar', 'false')
         queryset = User.objects.all()
 
         if username:
-            queryset = queryset.filter(username=username)
+            if similar == 'false':
+                queryset = queryset.filter(username__iexact=username)
+            else:
+                queryset = queryset.filter(username__contains=username)
 
         return queryset
 

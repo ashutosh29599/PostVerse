@@ -28,6 +28,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         username = self.request.query_params.get('username')
+        text = self.request.query_params.get('text')
         sort_by = self.request.query_params.get('sort-by', 'latest_first')
 
         match sort_by:
@@ -44,7 +45,10 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = Post.objects.select_related('user').order_by(sort_by)  # type: ignore
 
         if username:
-            queryset = queryset.filter(user__username=username)
+            queryset = queryset.filter(user__username__iexact=username)
+
+        if text:
+            queryset = queryset.filter(text__contains=text)
 
         return queryset
 
