@@ -25,7 +25,9 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context['include_fields'] = {
+            'all': self.request.query_params.get('all', 'false'),
             'email': self.request.query_params.get('email', 'true'),
+            'date_joined': self.request.query_params.get('date_joined', 'true'),
             'first_name': self.request.query_params.get('first_name', 'true'),
             'last_name': self.request.query_params.get('last_name', 'true'),
             'photo': self.request.query_params.get('photo', 'false'),
@@ -35,7 +37,30 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         username = self.request.query_params.get('username')
         similar = self.request.query_params.get('similar', 'false')
-        queryset = User.objects.all()
+        sort_by = self.request.query_params.get('sort-by', 'username_asc')
+
+        match sort_by:
+            # Sorting by User Model
+            case 'username_asc':
+                sort_by = 'username'
+            case 'username_desc':
+                sort_by = '-username'
+            case 'oldest_first':
+                sort_by = 'date_joined'
+            case 'newest_first':
+                sort_by = '-date_joined'
+
+            # Sorting by Profile Model
+            case 'first_name_asc':
+                sort_by = 'profile__first_name'
+            case 'first_name_desc':
+                sort_by = '-profile__first_name'
+            case 'last_name_asc':
+                sort_by = 'profile__last_name'
+            case 'last_name_desc':
+                sort_by = '-profile__last_name'
+
+        queryset = User.objects.all().order_by(sort_by)
 
         if username:
             if similar == 'false':

@@ -2,7 +2,8 @@ from django.shortcuts import reverse
 from http.cookies import SimpleCookie
 from rest_framework.test import APITestCase
 
-from tests.utils.create_user import create_user
+from tests.utils.UserFactory import create_user
+from tests.utils.ProfileFactory import generate_profile_data
 
 
 class RegisteredUsersTestBase(APITestCase):
@@ -59,3 +60,19 @@ class RegisteredUsersTestBase(APITestCase):
 
         self.client.cookies['refresh']['httponly'] = True
         self.client.cookies['refresh']['secure'] = True
+
+    def update_user_profile(self, first_name='Test', last_name='User', bio='Test Bio!', photo=None):
+        """
+        Updates the user profile with the given data.
+
+        Parameters
+        __________
+        first_name : str
+        last_name : str
+        bio : str
+        photo : str
+            Provides the name of the photo (must be in .png format)
+        """
+        profile_data = generate_profile_data(self.user.id, first_name=first_name, last_name=last_name, bio=bio,
+                                             photo=photo)
+        self.client.patch(reverse('edit_profile'), data=profile_data)

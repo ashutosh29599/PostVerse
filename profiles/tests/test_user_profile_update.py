@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from rest_framework import status
 
 from tests.utils.registered_users_tests_base import RegisteredUsersTestBase
-from profiles.tests.utils.generate_profile_data import generate_profile_data
+from tests.utils.ProfileFactory import generate_profile_data
 
 
 class UserProfileUpdateTest(RegisteredUsersTestBase):

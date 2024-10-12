@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'photo']
+        fields = ['username', 'email', 'date_joined', 'first_name', 'last_name', 'photo']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -18,17 +18,23 @@ class UserSerializer(serializers.ModelSerializer):
         include_fields = self.context.get('include_fields')
         representation['username'] = instance.username
 
-        if include_fields.get('email', 'true').lower() == 'false':
-            representation.pop('email', None)
+        include_all_fields = True if include_fields.get('all', 'false').lower() == 'true' else False
 
-        if include_fields.get('first_name', 'true').lower() == 'false':
-            representation.pop('first_name', None)
+        if not include_all_fields:
+            if include_fields.get('email', 'true').lower() == 'false':
+                representation.pop('email', None)
 
-        if include_fields.get('last_name', 'true').lower() == 'false':
-            representation.pop('last_name', None)
+            if include_fields.get('date_joined', 'true').lower() == 'false':
+                representation.pop('date_joined', None)
 
-        if include_fields.get('photo', 'true').lower() == 'false':
-            representation.pop('photo', None)
+            if include_fields.get('first_name', 'true').lower() == 'false':
+                representation.pop('first_name', None)
+
+            if include_fields.get('last_name', 'true').lower() == 'false':
+                representation.pop('last_name', None)
+
+            if include_fields.get('photo', 'true').lower() == 'false':
+                representation.pop('photo', None)
 
         return representation
 
