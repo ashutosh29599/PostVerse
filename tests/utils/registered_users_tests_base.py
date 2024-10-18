@@ -26,7 +26,7 @@ class RegisteredUsersTestBase(APITestCase):
                                                        password1=password1,
                                                        password2=password2)
 
-    def authenticate(self, correct_access_token=True, correct_refresh_token=True):
+    def authenticate(self, user_credentials=None, correct_access_token=True, correct_refresh_token=True):
         """
         Sets access and refresh tokens as HttpOnly cookies.
 
@@ -38,9 +38,12 @@ class RegisteredUsersTestBase(APITestCase):
             Specifies whether the refresh token being set is supposed to be the correct one. True by default.
         """
 
+        if not user_credentials:
+            user_credentials = self.user_credentials
+
         tokens = self.client.post(reverse('login'), data={
-            'username': self.user_credentials['username'],
-            'password': self.user_credentials['password1']
+            'username': user_credentials['username'],
+            'password': user_credentials['password1']
         })
 
         self.client.cookies = SimpleCookie()

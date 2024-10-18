@@ -6,9 +6,6 @@ from rest_framework_simplejwt.tokens import AccessToken
 
 
 class CookieJWTAuthentication(BaseAuthentication):
-    """
-        Generated using ChatGPT
-    """
     def authenticate(self, request):
         access_token = request.COOKIES.get('access')
 

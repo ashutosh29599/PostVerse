@@ -14,9 +14,6 @@ class PostPagination(PageNumberPagination):
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    """
-    Issue: Currently any authenticated user can update any post (even those that they don't own).
-    """
     queryset = Post.objects.all()  # type: ignore
     serializer_class = PostSerializer
     pagination_class = PostPagination
@@ -62,9 +59,11 @@ class PostViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        # TODO: Check the request.user == user making this request.
-        # Need to send the user_id/username/email/your choice of identifier in the data.
-        # request.user.id, request.user, request.user.username (same as prev), request.user.email all work.
+        if Post.objects.get(id=kwargs['pk']).user != request.user:  # type: ignore
+            return Response(
+                {'detail': 'The post to be updated needs to be owned by the requesting user.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         if 'text' not in request.data and 'photo' not in request.data:
             return Response(

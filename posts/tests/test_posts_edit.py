@@ -92,3 +92,19 @@ class EditPostTest(RegisteredUsersTestBase):
 
         self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
         self.assertEqual('A post must either have text or photo or both.', response.json()['detail'])
+
+    def test_edit_post_owned_by_another_user(self):
+        post = PostFactory.create_a_post(client=self.client, text='This is a test post!', photo=None)
+        post_id, post_user = post.json()['id'], post.json()['user']
+
+        super().setUp(username='test_user_2', email='test_user_2@domain.com',
+                      password1='super_secret_password1', password2='super_secret_password1')
+        super().authenticate(user_credentials={
+            'username': 'test_user_2',
+            'password1': 'super_secret_password1'
+        })
+
+        response = PostFactory.update_a_post(client=self.client, post_id=post_id, text='This is the edited post!')
+
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+        self.assertEqual('The post to be updated needs to be owned by the requesting user.', response.json()['detail'])
