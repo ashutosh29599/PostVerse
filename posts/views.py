@@ -33,9 +33,9 @@ class PostViewSet(viewsets.ModelViewSet):
                 sort_by = '-updated_at'
             case 'oldest_first':
                 sort_by = 'updated_at'
-            case 'username_ascending':
+            case 'username_ascending' | 'username_asc':
                 sort_by = 'user__username'
-            case 'username_descending':
+            case 'username_descending' | 'username_desc':
                 sort_by = '-user__username'
 
         # select_related helps us add the 'user' in the response

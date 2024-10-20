@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "43d960ae-c87d-4686-a063-2115d7e31e54",
 		"name": "PostVerse API",
-		"description": "Version: v1.0.0\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
+		"description": "Version: v1.3.1\n\nWelcome to the Postverse API, a RESTful service designed for the PostVerse social platform. This article describes what the PostVerse API has to offer.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24526531"
 	},
@@ -289,77 +289,143 @@
 						"description": "This endpoint allows users to refresh their access token using a valid refresh token. This enables continuous access without requiring the user to re-authenticate, enhancing security and usability.\n\n- **Method:** `POST`\n    \n- **Path:** `/api/accounts/token/refresh/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** A new Access Token as HttpOnly cookie."
 					},
 					"response": []
+				},
+				{
+					"name": "Fetch Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/accounts/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"accounts",
+								""
+							]
+						},
+						"description": "This endpoint allows a requester to request the public data of all the users. By default, the username, email, first name, and last name of all the users is returned. Optionally, with a query parameter, the profile photo can also be requested. If any data field being sent is not required, with query parameters, the request can deny them. The value of the query parameters must be either `true` or `false` string (case is irrelevant).\n\n- **Method:** GET\n    \n- **Path:** `/api/accounts/`, `/api/accounts/?email=false&photo=true`\n    \n- **Query Paramters:** `email`, `first_name`, `last_name`, `photo`\n    \n- **Requires:** Nothing\n    \n- **Response:** A JSON object with the requested data."
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User by Username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/accounts/?username=ashutosh",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"accounts",
+								""
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "ashutosh"
+								}
+							]
+						},
+						"description": "This endpoint allows a requester to request the public data of a particular user by providing their username. By default, the username, email, first name, and last name of all the users is returned. Optionally, with a query parameter, the profile photo can also be requested. If any data field being sent is not required, with query parameters, the request can deny them. The value of the query parameters must be either `true` or `false` string (case is irrelevant).\n\n- **Method:** GET\n    \n- **Path:** `/api/accounts/?username=my_username`\n    \n- **Query Parameters:** `email`, `first_name`, `last_name`, `photo`\n    \n- **Requires:** Nothing\n    \n- **Response:** A JSON object with the requested data."
+					},
+					"response": []
 				}
 			],
-			"description": "This sections contains all user authentication and account management functionalities in the PostVerse API. These endpoints enable developers to integrate secure user registration, authentication, token management, and password change into their applications. Using JWT (JSON Web Tokens), stored as HttpOnly cookies, this API ensures secure and efficient user authentication workflows, while providing methods for users to manage their own credentials.\n\n#### Endpoints\n\n1. Register a New User: Allows users to sign up by providing a username, password, and email.\n    \n2. Logging a User In: Allows a user to log in by providing the username and password.\n    \n3. Logging a User Out: Allows a user to log out and have their tokens deleted from the cookies.\n    \n4. Checking Authentication: Allows the client to check verify whether the user is logged in and get their username.\n    \n5. Changing Password: Allows authenticated users to change their passwords securely.\n    \n6. Deleting a User: Allows an authenticated user to delete their account.\n    \n7. Refresh Token: Generates a new access token using a valid refresh token."
+			"description": "**Note:** The API documentation for `Accounts` _has not_ been updated for v1.3.1 as of 20 October 2024.\n\nThis sections contains all user authentication and account management functionalities in the PostVerse API. These endpoints enable developers to integrate secure user registration, authentication, token management, and password change into their applications. Using JWT (JSON Web Tokens), stored as HttpOnly cookies, this API ensures secure and efficient user authentication workflows, while providing methods for users to manage their own credentials.\n\n#### Endpoints\n\n1. Register a New User: Allows users to sign up by providing a username, password, and email.\n    \n2. Logging a User In: Allows a user to log in by providing the username and password.\n    \n3. Logging a User Out: Allows a user to log out and have their tokens deleted from the cookies.\n    \n4. Checking Authentication: Allows the client to check verify whether the user is logged in and get their username.\n    \n5. Changing Password: Allows authenticated users to change their passwords securely.\n    \n6. Deleting a User: Allows an authenticated user to delete their account.\n    \n7. Refresh Token: Generates a new access token using a valid refresh token."
 		},
 		{
 			"name": "Profiles",
 			"item": [
 				{
-					"name": "Get User Profile",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/profiles/profile/test_user/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"profiles",
-								"profile",
-								"test_user",
-								""
-							]
-						},
-						"description": "This endpoint allows users to fetch any user's profile. Users must provide the username of the user whose profile details they wish to fetch.\n\n- **Method:** `GET`\n    \n- **Path:** `api/profiles/profile/test_user/`\n    \n- **Requires:** Profile owner's username.\n    \n- **Response:** Profile details (first name, last name, bio, photo)"
-					},
-					"response": []
+					"name": "Profile Fetch",
+					"item": [
+						{
+							"name": "Get User Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/profiles/profile/test_user/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"profiles",
+										"profile",
+										"test_user",
+										""
+									]
+								},
+								"description": "This endpoint allows users to fetch any user's profile. Users must provide the username of the user whose profile details they wish to fetch.\n\n- **Method:** `GET`\n    \n- **Path:** `api/profiles/profile//`\n    \n- **Requires:** Profile owner's `username`\n    \n- **Response:** Profile details (first name, last name, bio, photo)"
+							},
+							"response": []
+						}
+					]
 				},
 				{
-					"name": "Edit User Profile",
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"user\": <user_id>,\n    \"first_name\": \"Test\",\n    \"last_name\": \"User\",\n    \"bio\": \"This is the test bio!\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/profiles/edit-profile/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"profiles",
-								"edit-profile",
-								""
-							]
-						},
-						"description": "This endpoint allows authenticated users to update their profile.\n\n- **Method:** `PATCH`\n    \n- **Path:** `api/profiles/edit_profile/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** Success/Failure message."
-					},
-					"response": []
+					"name": "Profile Update",
+					"item": [
+						{
+							"name": "Edit User Profile",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"user\": <user_id>,\n    \"first_name\": \"Test\",\n    \"last_name\": \"User\",\n    \"bio\": \"This is the test bio!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/profiles/edit-profile/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"profiles",
+										"edit-profile",
+										""
+									]
+								},
+								"description": "This endpoint allows authenticated users to update their profile.\n\n- **Method:** `PATCH`\n    \n- **Path:** `api/profiles/edit_profile/`\n    \n- **Requires:** User must be authenticated and have a valid access token.\n    \n- **Response:** Success/Failure message."
+							},
+							"response": []
+						}
+					]
 				}
 			],
 			"description": "This sections contains all user profile management functionalities in the PostVerse API. These endpoints enable developers to integrate user profile fetching and secure user profile updation functionalities in their applications.\n\n#### Endpoints\n\n1. Fetching a User Profile: Allows users to visit a user's profile by providing the user's username.\n    \n2. Updating a User Profile: Allows authenticated users to update their profile."
@@ -368,162 +434,310 @@
 			"name": "Posts",
 			"item": [
 				{
-					"name": "Create Post",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjkwOTg4LCJpYXQiOjE3MjY2MDQ1ODgsImp0aSI6IjA4YWFlMWY2ZDEwMTQyMjFiMmQ4MzYyYjI3ZDE4YzZkIiwidXNlcl9pZCI6N30.9WgzLSn5-P52LY-_FSTFxqYHSRqtzkf7uVjVT9QfgLY",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "text",
-									"value": "twelve",
-									"type": "text"
+					"name": "Post Fetch",
+					"item": [
+						{
+							"name": "Fetch All Posts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts"
+									]
 								},
-								{
-									"key": "photo",
-									"type": "file",
-									"src": "/Users/ashutosh/Desktop/Grad Photos/Ashutosh Graduation Photoshoot/DSC03716.JPG",
-									"disabled": true
-								}
-							]
+								"description": "This endpoint allows users to fetch all the posts, with default page size.\n\n- **Method:** GET\n    \n- **Path:** `/api/posts/`\n    \n- **Requires:** Nothing\n    \n- **Response:** A list of posts, alongwith the count of all posts, and the url to the previous and next pages, if available."
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/posts/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"posts",
-								""
-							]
+						{
+							"name": "Fetch Posts by Username",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/?username=username",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "username",
+											"value": "username"
+										}
+									]
+								},
+								"description": "This endpoint allows users to fetch all the posts by a specific user, with default page size.\n\n- **Method:** GET\n    \n- **Path:** `/api/posts/?username=username`\n    \n- **Requires:** `username`\n    \n- **Response:** A list of posts by the user whose username is provided, alongwith the count of all posts, and the url to the previous and next pages, if available."
+							},
+							"response": []
 						},
-						"description": "This endpoint allows authenticated users to create a post.\n\n- **Method:** `POST`\n    \n- **Path:** `api/posts/create/`\n    \n- **Requires:** Post text with an optional image\n    \n- **Response:** Details associated with the post if successful with `200 OK` HTTP status code, else errors with `400 BAD REQUEST` HTTP status code."
-					},
-					"response": []
-				},
-				{
-					"name": "Update Post",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
-									"type": "string"
-								}
-							]
+						{
+							"name": "Fetch All Posts in a Sorted Fashion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/?sort-by=oldest_first",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "sort-by",
+											"value": "oldest_first"
+										}
+									]
+								},
+								"description": "This endpoint allows users to fetch all the posts in a sorted fashion, with default page size. The sorting options are\n\n1. `lastest_first`\n    \n2. `oldest_first`\n    \n3. `username_ascending` or `username_asc`\n    \n4. `username_descending` or `username_desc`\n    \n\n- **Method:** GET\n    \n- **Path:** `/api/posts/?sort-by=sorting_criteria`\n    \n- **Requires:** `sort-by`\n    \n- **Response:** A list of posts sorted by the sorting criteria provided, alongwith the count of all posts, and the url to the previous and next pages, if available."
+							},
+							"response": []
 						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Updating the test post!\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+						{
+							"name": "Fetch All Posts with Custom Page Size",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/?page_size=2",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "page_size",
+											"value": "2"
+										}
+									]
+								},
+								"description": "This endpoint allows users to fetch all the posts with a custom page size. The default page size is 10. The maximum page size is 100.\n\n- **Method:** GET\n    \n- **Path:** `/api/posts/?page_size=page_size`\n    \n- **Requires:** `page_size`\n    \n- **Response:** A list of posts with the custom page size provided, alongwith the count of all posts, and the url to the previous and next pages, if available."
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/posts/<post_id>/update/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"posts",
-								"<post_id>",
-								"update",
-								""
-							]
-						},
-						"description": "This endpoint allows authenticated users to update their post.\n\n- **Method:** `PUT`\n    \n- **Path:** `api/posts//update/`\n    \n- **Requires:** Post text with an optional image\n    \n- **Response:** Details associated with the post if successful with `200 OK` HTTP status code, else errors with `400 BAD REQUEST` HTTP status code."
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Post",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/posts/<post_id>/delete/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"posts",
-								"<post_id>",
-								"delete",
-								""
-							]
-						},
-						"description": "This endpoint allows authenticated users to delete their post.\n\n- **Method:** `DELETE`\n    \n- **Path:** `api/posts//delete/`\n    \n- **Requires:** Post id\n    \n- **Response:** `204 NO CONTENT` HTTP status code if successful. `404 NOT FOUND` HTTP status code if the post id is invalid."
-					},
-					"response": []
-				},
-				{
-					"name": "Fetch All Posts",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/posts/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"posts",
-								""
-							]
+						{
+							"name": "Fetch All Posts that Match a Search Query",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/?text=hey",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										""
+									],
+									"query": [
+										{
+											"key": "text",
+											"value": "hey"
+										}
+									]
+								},
+								"description": "This endpoint allows users to fetch all the posts that match their search query, with default page size. The search query is case-insenstive.\n\n- **Method:** GET\n    \n- **Path:** `/api/posts/?text=text`\n    \n- **Requires:** `text`\n    \n- **Response:** A list of posts that match the provided search query, alongwith the count of all posts, and the url to the previous and next pages, if available."
+							},
+							"response": []
 						}
-					},
-					"response": []
+					],
+					"description": "This section contains the endpoint to fetch the post along with the various query parameters. The various options are\n\n1. Fetch All Posts\n    \n2. Fetch All Posts by a User\n    \n3. Fetch All Posts in a Sorted Fashion\n    \n4. Fetch All Posts with Custom Page Size\n    \n5. Fetch All Posts that Match a Search Query"
+				},
+				{
+					"name": "Post Create",
+					"item": [
+						{
+							"name": "Create Post",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjkwOTg4LCJpYXQiOjE3MjY2MDQ1ODgsImp0aSI6IjA4YWFlMWY2ZDEwMTQyMjFiMmQ4MzYyYjI3ZDE4YzZkIiwidXNlcl9pZCI6N30.9WgzLSn5-P52LY-_FSTFxqYHSRqtzkf7uVjVT9QfgLY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "text",
+											"value": "POSTMAN",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": [],
+											"disabled": true
+										},
+										{
+											"key": "access",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI5NDU1MjI2LCJpYXQiOjE3MjkzNjg4MjYsImp0aSI6Ijc2MGNhNmJiMWQzODQwMThiZDQzNGY3NjFkZGI0NTJkIiwidXNlcl9pZCI6MX0.ZXr-42djDK_y6MEbL2i-r_ez5Tb2m0ZvKTrGwxfgxKY",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										""
+									]
+								},
+								"description": "This endpoint allows authenticated users to create a post.\n\n- **Method:** `POST`\n    \n- **Path:** `api/posts/create/`\n    \n- **Requires:** `text`, `photo` (At least one of these)\n    \n- **Response:** Details associated with the post if successful with `200 OK` HTTP status code, else errors with `400 BAD REQUEST` HTTP status code."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Post Update",
+					"item": [
+						{
+							"name": "Update Post",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\": \"Updating the test post!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/<post_id>/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										"<post_id>",
+										""
+									]
+								},
+								"description": "This endpoint allows authenticated users to update their post.\n\n- **Method:** `PATCH`\n    \n- **Path:** `api/posts//`\n    \n- **Requires:** Post text/image + `post_id`\n    \n- **Response:** Details associated with the post if successful with `200 OK` HTTP status code, else errors with `400 BAD REQUEST` HTTP status code."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Post Delete",
+					"item": [
+						{
+							"name": "Delete Post",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI2NjA0MDM1LCJpYXQiOjE3MjY1MTc2MzUsImp0aSI6ImU1OTdiNjZlYTgxNTQyNTg4YjgwMzIzZjU4NTNiOTgzIiwidXNlcl9pZCI6N30.s03dau9QKUSj-3geXNPMTlCObjaFNcOFA-vE4_7j2f8",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/posts/<post_id>/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"posts",
+										"<post_id>",
+										""
+									]
+								},
+								"description": "This endpoint allows authenticated users to delete their post.\n\n- **Method:** `DELETE`\n    \n- **Path:** `api/posts//`\n    \n- **Requires:** `post_id`\n    \n- **Response:** `204 NO CONTENT` HTTP status code if successful. `404 NOT FOUND` HTTP status code if the post id is invalid."
+							},
+							"response": []
+						}
+					]
 				}
 			],
 			"description": "This sections contains all user post management functionalities in the PostVerse API. These endpoints enable developers to integrate create, update, and delete functionalities for posts in their applications."

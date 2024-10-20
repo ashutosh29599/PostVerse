@@ -13,7 +13,6 @@ class FetchPostTest(RegisteredUsersTestBase):
         make test module=posts.tests.test_posts_fetch.FetchPostTest
     """
 
-    # TODO: update tests to verify the username.
     def setUp(self, *args, **kwargs):
         super().setUp(*args, **kwargs)
         super().authenticate()
