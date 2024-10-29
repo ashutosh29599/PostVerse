@@ -10,6 +10,10 @@ migrate:
 migrations:
 	poetry run python3 manage.py makemigrations
 
+.PHONY: startapp
+startapp:
+	poetry run python3 manage.py startapp $(app)
+
 .PHONY: run-server
 run-server:
 	poetry run python3 manage.py runserver
